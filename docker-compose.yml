@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: Linage2_towns
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES:PASSWORD: lineage2
+      POSTGRES_DB: L2_towns
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:var/lib/postgresql/data
+      - ./docker_data/L2_towns_dump.sql:/docker-entrypoint-initdb.d/dump.sql
+
+volumes:
+  postgres_data:
+    driver: "local"
