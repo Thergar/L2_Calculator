@@ -32,24 +32,29 @@ public class DatabaseConnection {
  * @throws RuntimeException if the {@code database.properties} cannot be found or read.
  */
     public static EntityManagerFactory getEntityManagerFactory() {
-        if (entityManagerFactory == null) {
-            try (InputStream input = DatabaseConnection.class.getClassLoader().getResourceAsStream("database.properties")) {
-                Properties properties = new Properties();
-                if (input == null) {
-                    throw new IOException("Unable to find database.properties file.");
-                }
-                properties.load(input);
+        Properties properties = loadDatabaseProperties();
 
                 Map<String, String> configOverrides = new HashMap<>();
                 configOverrides.put("javax.persistence.jdbc.url", properties.getProperty("db.url"));
                 configOverrides.put("javax.persistence.jdbc.user", properties.getProperty("db.user"));
                 configOverrides.put("javax.persistence.jdbc.password", properties.getProperty("db.password"));
 
-                entityManagerFactory = Persistence.createEntityManagerFactory("L2Persistence", configOverrides);
-            } catch (IOException e) {
-                e.printStackTrace();
+                return entityManagerFactory = Persistence.createEntityManagerFactory("L2Persistence", configOverrides);
+    }
+
+    private static Properties loadDatabaseProperties() {
+
+        Properties properties = new Properties();
+
+        try(InputStream input = DatabaseConnection.class.getClassLoader().getResourceAsStream("database.properties")) {
+
+            if (input == null) {
+                throw new IOException("Unable to find database.properties file");
             }
+            properties.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return entityManagerFactory;
+        return properties;
     }
 }
