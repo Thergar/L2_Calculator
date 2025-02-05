@@ -5,14 +5,14 @@ services:
     container_name: Linage2_towns
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES:PASSWORD: lineage2
+      POSTGRES_USER: ${MY_USER}
+      POSTGRES_PASSWORD: ${MY_PASSWORD}
       POSTGRES_DB: L2_towns
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./docker_data/L2_towns_dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./L2_towns_dump.sql:/docker-entrypoint-initdb.d/dump.sql
 
   l2_app:
     build: .
@@ -20,10 +20,11 @@ services:
     depends_on:
       - l2_postgres
     environment:
-      DB_HOST: L2_postgres
+      DB_HOST: l2_postgres
+      DB_USER: ${MY_USER}
+      DB_PASSWORD: ${MY_PASSWORD}
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: lineage2
+
     ports:
       - "2137:2137"
 

@@ -32,6 +32,7 @@ public class DatabaseConnection {
  * @throws RuntimeException if the {@code database.properties} cannot be found or read.
  */
     public static EntityManagerFactory getEntityManagerFactory() {
+
         Properties properties = loadDatabaseProperties();
 
                 Map<String, String> configOverrides = new HashMap<>();

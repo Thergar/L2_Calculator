@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public class TownService {
 
-    private final EntityManager entityManager;
+    protected final EntityManager entityManager;
 
 /**
  * Constructs the {@link TownService} object by initializing the {@link EntityManager}.
@@ -85,17 +85,17 @@ public class TownService {
 
         Map<String,Integer> result = new HashMap<>();
 
-// Convert the town name into the corresponding teleportation table.
+        // Convert the town name into the corresponding teleportation table.
         String tableName = matchTownNameWithTableName(townName);
 
-// Creates the SQL query to retrieve teleportation data.
+        // Creates the SQL query to retrieve teleportation data.
         String query = createTeleportQuery(tableName);
 
-// Executes the query and map the results to the list of objects.
-        //JPa doesn't guarantee that retrieved result will be matched with Object[].class.
+        // Executes the query and map the results to the list of objects.
+        //JPA doesn't guarantee that retrieved result will be matched with Object[].class.
         List<Object[]> teleportData = entityManager.createNativeQuery(query, Object[].class).getResultList();
 
-//Iterates through each row of the teleport data list, extracting destination town and cost, and puts them into result map.
+        //Iterates through each row of the teleport data list, extracting destination town and cost, and puts them into result map.
         for (Object[] row : teleportData) {
             String destinationTown = (String) row[0];
             Integer cost = ((Number) row[1]).intValue();
@@ -103,5 +103,14 @@ public class TownService {
         }
 
         return result;
+    }
+
+/**
+ * Closes the {@link EntityManager} if it is still open.
+ */
+        public void emClose() {
+        if (entityManager != null && entityManager.isOpen()) {
+            entityManager.close();
+        }
     }
 }
