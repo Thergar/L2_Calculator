@@ -1,7 +1,8 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.DTOPathResult;
+import Lineage2Calculator.DbServices.TownService;
+import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
 
 import java.util.*;
@@ -16,6 +17,8 @@ import java.util.*;
  * </p>
  */
 public class DijkstraAlgorithm {
+
+    static TownService townService = new TownService();
 
 /**
  * Finds the cheapest path between the starting town and destination town using Dijkstra's algorithm.
@@ -34,6 +37,8 @@ public class DijkstraAlgorithm {
  */
     public static DTOPathResult findCheapestPath(Graph graph, String startTown, String endTown) {
 
+        try {
+
         // Validate existence of startTown and endTown exist in the graph.
         ErrorHandling.validateTowns(graph, startTown, endTown);
 
@@ -44,55 +49,54 @@ public class DijkstraAlgorithm {
         Map<String, String> previousTown = new HashMap<>();
 
         // Stores towns which will be visited and prioritizes those with the lowest teleport price.
-        PriorityQueue<String> queue = new PriorityQueue<>((town1, town2) -> minCost.get(town1) - minCost.get(town2));
+        PriorityQueue<Map.Entry<String, Integer>> queue = new PriorityQueue<>((Map.Entry.comparingByValue()));
 
         // Initialize teleportation cost for all towns as infinity and adds start town to queue with cost zero.
         for (String town : graph.getAdjacencyMap().keySet()) {
             minCost.put(town, Integer.MAX_VALUE);
         }
         minCost.put(startTown, 0);
-        queue.add(startTown);
+        queue.add(new AbstractMap.SimpleEntry<>(startTown, 0));
 
         // Main loop for Dijkstra's algorithm.
         while (!queue.isEmpty()) {
-            String currentTown = queue.poll();
+            Map.Entry<String, Integer> currentEntry = queue.poll();
+            String currentTown = currentEntry.getKey();
 
             if (currentTown.equals(endTown)) {
                 break;
             }
 
             // Retrieves neighbors of current towns.
-            Map<String, Integer> neighbors = graph.getNeighbors(currentTown);
+            //Map<String, Integer> neighbors = graph.getNeighbors(currentTown);
 
             // Iterates through neighbors and updates cost.
-            for (Map.Entry<String, Integer> entry : neighbors.entrySet()) {
-                String neighbor = entry.getKey();
-                int cost = entry.getValue();
+            for (Map.Entry<String, Integer> neighborEntry : graph.getNeighbors(currentTown).entrySet()) {
+
+                String neighbor = neighborEntry.getKey();
+                int cost = neighborEntry.getValue();
 
                 int newCost = minCost.get(currentTown) + cost;
                 if (newCost < minCost.get(neighbor)) {
                     minCost.put(neighbor, newCost);
                     previousTown.put(neighbor, currentTown);
-                    queue.add(neighbor);
+                    queue.add(new AbstractMap.SimpleEntry<>(neighbor, newCost));
                 }
             }
         }
 
         // Reconstructs the path from destination town to starting town.
-        List<String> path = new ArrayList<>();
-        String step = endTown;
-        while (step != null) {
-            path.add(0, step);
-            step = previousTown.get(step);
-        }
-
+        List<String> path = PathReconstructor.reconstructPath(previousTown, endTown);
         int totalCost = minCost.get(endTown);
 
         // Handles error when cannot find path from the start town to the destination town.
-        if (totalCost == Integer.MAX_VALUE) {
+        if (!previousTown.containsKey(endTown)) {
             ErrorHandling.pathNotFound(startTown, endTown);
         }
 
         return DTOPathResult.forDijkstra(path, totalCost);
+        } finally {
+            townService.emClose();
+        }
     }
 }

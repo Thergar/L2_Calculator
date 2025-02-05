@@ -22,7 +22,7 @@ public class JpaConfig {
 /**
  * Instance of EntityManagerFactory, that is used for interacting with the database.
  */
-    protected static EntityManagerFactory entityManagerFactory;
+    protected static final EntityManagerFactory entityManagerFactory;
 
     static {
         entityManagerFactory = DatabaseConnection.getEntityManagerFactory();
@@ -43,7 +43,7 @@ public class JpaConfig {
 /**
  * Closes the {@link EntityManagerFactory} if it is still open.
  */
-    public static void emfClose() {
+    private static void emfClose() {
         if (entityManagerFactory != null && entityManagerFactory.isOpen()) {
             entityManagerFactory.close();
         }
