@@ -1,6 +1,9 @@
 plugins {
     id("java")
     id("application")
+
+    id("org.springframework.boot") version "3.4.2"
+    id("io.spring.dependency-management") version "1.1.7"
 }
 
 
@@ -13,13 +16,19 @@ repositories {
 }
 
 dependencies {
+
+    // Starter for Spring Boot.
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.4.2")
+
+    // Driver for PostgresSQL.
+    implementation ("org.postgresql:postgresql:42.7.5")
+
+    // 
+    implementation ("io.github.cdimascio:dotenv-java:3.1.0")
+
+    // Dependencies for tests.
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.1")
-    implementation("org.postgresql:postgresql:42.7.4")
-
-    //implementation("org.hibernate.orm:hibernate-core:6.5.2.Final")
 }
 
 tasks.test {
