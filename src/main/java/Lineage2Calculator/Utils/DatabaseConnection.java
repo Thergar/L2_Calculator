@@ -1,13 +1,14 @@
 package Lineage2Calculator.Utils;
 
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import javax.sql.DataSource;
 
 /**
  * Utility class responsible for managing the creation and configuration
@@ -17,45 +18,40 @@ import java.util.Properties;
  *     file located in the {@code resources} directory.
  * </p>
  */
+@Configuration
 public class DatabaseConnection {
 
-    private static EntityManagerFactory entityManagerFactory;
 
-/**
- * Retrieves single instance of {@link EntityManagerFactory}.
- * <p>
- *     If the instance has not been created yet, it initializes it
- *     using the database configurations specified in the {@code database.properties} file.
- * </p>
- *
- * @return The {@link EntityManagerFactory} instance.
- * @throws RuntimeException if the {@code database.properties} cannot be found or read.
- */
-    public static EntityManagerFactory getEntityManagerFactory() {
+    /**
+     * Configures the {@link LocalContainerEntityManagerFactoryBean}, which is
+     * the JPA-specific extension of the {@link EntityManagerFactory}.
+     *
+     * @param dataSource the {@link DataSource} used for database connectivity.
+     * @return a configured instance of {@link LocalContainerEntityManagerFactoryBean}.
+     */
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
 
-        Properties properties = loadDatabaseProperties();
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 
-                Map<String, String> configOverrides = new HashMap<>();
-                configOverrides.put("javax.persistence.jdbc.url", properties.getProperty("db.url"));
-                configOverrides.put("javax.persistence.jdbc.user", properties.getProperty("db.user"));
-                configOverrides.put("javax.persistence.jdbc.password", properties.getProperty("db.password"));
+        // Set the datasource for database connection
+        factoryBean.setDataSource(dataSource);
+        // Set the package(s) to scan for JPA entities
+        factoryBean.setPackagesToScan("Lineage2Calculator");
 
-                return entityManagerFactory = Persistence.createEntityManagerFactory("L2Persistence", configOverrides);
+        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        return factoryBean;
     }
 
-    private static Properties loadDatabaseProperties() {
-
-        Properties properties = new Properties();
-
-        try(InputStream input = DatabaseConnection.class.getClassLoader().getResourceAsStream("database.properties")) {
-
-            if (input == null) {
-                throw new IOException("Unable to find database.properties file");
-            }
-            properties.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
+    /**
+     * Configures the transaction manager for JPA, enabling declarative transaction management
+     * using annotations like {@code @Transactional} throughout the application.
+     *
+     * @param entityManagerFactory the {@link EntityManagerFactory} used for managing JPA entities.
+     * @return a configured {@link JpaTransactionManager}.
+     */
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
     }
 }

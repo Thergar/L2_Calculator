@@ -1,4 +1,4 @@
-package Lineage2Calculator;
+package Lineage2Calculator.Utils;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class DTOPathResult {
 /**
  * The number of steps (teleportation transitions) for BFS algorithm.
  */
-    private int steps;
+    private  int steps;
 
  /**
   * Constructs a DTOPathResult with the entire path and total cost of dijkstra algorithm.

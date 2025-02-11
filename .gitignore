@@ -44,4 +44,4 @@ bin/
 
 /src/main/resources/database.properties
 .log
-.env
+src/main/resources/.env

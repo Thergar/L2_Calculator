@@ -1,9 +1,9 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.DTOPathResult;
-import Lineage2Calculator.DbServices.TownService;
+import Lineage2Calculator.Utils.DTOPathResult;
 import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -15,9 +15,16 @@ import java.util.*;
  *     considering all intermediate towns.
  * </p>
  */
-public class BFSAlgorithm {
+@Component
+public class BFSAlgorithm implements PathfindingAlgorithm {
 
-    static TownService townService = new TownService();
+    private final PathReconstruct pathReconstruct;
+    private final ErrorHandling errorHandling;
+
+    public BFSAlgorithm(PathReconstruct pathReconstruct, ErrorHandling errorHandling) {
+        this.pathReconstruct = pathReconstruct;
+        this.errorHandling = errorHandling;
+    }
 
     /**
      * Finds the shortest path between the starting town and destination town using BFS algorithm.
@@ -34,12 +41,10 @@ public class BFSAlgorithm {
      * @throws IllegalArgumentException if the starting or destination town does not exist in graph or if they are the same.
      * @throws RuntimeException         if no path can be found between the towns.
      */
-    public static DTOPathResult findShortestPath(Graph graph, String startTown, String endTown) {
-
-        try {
+    public DTOPathResult findShortestPath(Graph graph, String startTown, String endTown) {
 
             // Validate the existence of startTown and endTown exist in the graph.
-            ErrorHandling.validateTowns(graph, startTown, endTown);
+            errorHandling.validatePathBetweenTowns(graph, startTown, endTown);
 
             // Initialize a queue for towns to visit. BFS requires operations on first and last elements.
             Queue<String> queue = new LinkedList<>();
@@ -55,7 +60,7 @@ public class BFSAlgorithm {
             previousTown.put(startTown, null);
             minCosts.put(startTown, 0);
 
-            // Main loop for BFS algorithm.
+            // Lineage2Calculator.Main loop for BFS algorithm.
             while (!queue.isEmpty()) {
 
                 //Retrieve and remove the first path from the queue. Sets last town at path list as "current Town" and gets path costs.
@@ -87,17 +92,18 @@ public class BFSAlgorithm {
             if (!previousTown.containsKey(endTown)) {
 
                 // Handles error when cannot find path from the start town to the destination town.
-                ErrorHandling.pathNotFound(startTown, endTown);
+                errorHandling.pathNotFound(startTown, endTown);
             }
 
             int totalCost = minCosts.get(endTown);
-            List<String> path = PathReconstructor.reconstructPath(previousTown, endTown);
+            List<String> path = pathReconstruct.reconstructPath(previousTown, endTown);
             int step = path.size() - 1;
 
             return DTOPathResult.forBFS(path, totalCost, step);
+    }
 
-        } finally {
-            townService.emClose();
-        }
+    @Override
+    public DTOPathResult algorithmPath(Graph graph, String startTown, String endTown) {
+        return findShortestPath(graph, startTown, endTown);
     }
 }

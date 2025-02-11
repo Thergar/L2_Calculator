@@ -1,9 +1,9 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.DTOPathResult;
-import Lineage2Calculator.DbServices.TownService;
+import Lineage2Calculator.Utils.DTOPathResult;
 import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -16,31 +16,36 @@ import java.util.*;
  *     that towns with the lowest teleportation cost are prioritized.
  * </p>
  */
-public class DijkstraAlgorithm {
+@Component
+public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
-    static TownService townService = new TownService();
+    private final PathReconstruct pathReconstruct;
+    private final ErrorHandling errorHandling;
 
-/**
- * Finds the cheapest path between the starting town and destination town using Dijkstra's algorithm.
- * <p>
- *     This method takes a graph object and two town names (start and end) as parameters.
- *     It validates the existence of the towns in the graph, calculates the cheapest path
- *     and reconstructs the path.
- *</p>
- *
- * @param graph the {@link Graph} object representing the teleportation network.
- * @param startTown the name of starting town.
- * @param endTown the name of destination town.
- * @return a {@link DTOPathResult} object containing the cheapest path and the total cost of teleportation.
- * @throws IllegalArgumentException if the starting or destination town does not exist in graph or if they are the same.
- * @throws RuntimeException if no path can be found between the towns.
- */
-    public static DTOPathResult findCheapestPath(Graph graph, String startTown, String endTown) {
+    public DijkstraAlgorithm(PathReconstruct pathReconstruct, ErrorHandling errorHandling) {
+        this.pathReconstruct = pathReconstruct;
+        this.errorHandling = errorHandling;
+    }
 
-        try {
+    /**
+    * Finds the cheapest path between the starting town and destination town using Dijkstra's algorithm.
+    * <p>
+    *     This method takes a graph object and two town names (start and end) as parameters.
+    *     It validates the existence of the towns in the graph, calculates the cheapest path
+    *     and reconstructs the path.
+    *</p>
+    *
+    * @param graph the {@link Graph} object representing the teleportation network.
+    * @param startTown the name of starting town.
+    * @param endTown the name of destination town.
+    * @return a {@link DTOPathResult} object containing the cheapest path and the total cost of teleportation.
+    * @throws IllegalArgumentException if the starting or destination town does not exist in graph or if they are the same.
+    * @throws RuntimeException if no path can be found between the towns.
+    */
+    public DTOPathResult findCheapestPath(Graph graph, String startTown, String endTown) {
 
         // Validate existence of startTown and endTown exist in the graph.
-        ErrorHandling.validateTowns(graph, startTown, endTown);
+        errorHandling.validatePathBetweenTowns(graph, startTown, endTown);
 
         // The map that stores the lowest value (price) of reaching the city.
         Map<String, Integer> minCost = new HashMap<>();
@@ -58,7 +63,7 @@ public class DijkstraAlgorithm {
         minCost.put(startTown, 0);
         queue.add(new AbstractMap.SimpleEntry<>(startTown, 0));
 
-        // Main loop for Dijkstra's algorithm.
+        // Lineage2Calculator.Main loop for Dijkstra's algorithm.
         while (!queue.isEmpty()) {
             Map.Entry<String, Integer> currentEntry = queue.poll();
             String currentTown = currentEntry.getKey();
@@ -86,17 +91,19 @@ public class DijkstraAlgorithm {
         }
 
         // Reconstructs the path from destination town to starting town.
-        List<String> path = PathReconstructor.reconstructPath(previousTown, endTown);
+        List<String> path = pathReconstruct.reconstructPath(previousTown, endTown);
         int totalCost = minCost.get(endTown);
 
         // Handles error when cannot find path from the start town to the destination town.
         if (!previousTown.containsKey(endTown)) {
-            ErrorHandling.pathNotFound(startTown, endTown);
+            errorHandling.pathNotFound(startTown, endTown);
         }
 
         return DTOPathResult.forDijkstra(path, totalCost);
-        } finally {
-            townService.emClose();
-        }
+    }
+
+    @Override
+    public DTOPathResult algorithmPath(Graph graph, String startTown, String endTown){
+        return findCheapestPath(graph, startTown, endTown);
     }
 }

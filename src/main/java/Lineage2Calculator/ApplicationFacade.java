@@ -1,11 +1,13 @@
 package Lineage2Calculator;
 
-import Lineage2Calculator.Enum.AlgorithmType;
 import Lineage2Calculator.Graph.Graph;
-import Lineage2Calculator.Graph.GraphBuilder;
 import Lineage2Calculator.InteractionManager.UserInput;
-import Lineage2Calculator.InteractionManager.UserInterface;
-import Lineage2Calculator.MainApplication.AlgorithmExecution;
+import Lineage2Calculator.InteractionManager.UserInteraction;
+import Lineage2Calculator.Services.AlgorithmLoggerService;
+import Lineage2Calculator.Services.AlgorithmService;
+import Lineage2Calculator.Services.GraphBuilderService;
+import Lineage2Calculator.Utils.DTOPathResult;
+import org.springframework.stereotype.Service;
 
 /**
  * A {@code ApplicationFace} class provides facade design pattern for interacting with the teleportation system.
@@ -14,56 +16,58 @@ import Lineage2Calculator.MainApplication.AlgorithmExecution;
  *     or path calculation of selected algorithm type, by sharing simplified methods.
  * </p>
  */
+@Service
 public class ApplicationFacade {
 
-/**
- * Executes the pathfinding algorithm specified by user.
- */
-    private final AlgorithmExecution algorithmExecution;
+    /**
+     * Executes the pathfinding algorithm specified by user.
+     */
+    private final AlgorithmService algorithmService;
 
-/**
- * Builds the graph representation of teleportation routes between towns.
- */
-    private final GraphBuilder graphBuilder;
+    /**
+     * Builds the graph representation of teleportation routes between towns.
+     */
+    private final Graph graph;
 
-/**
- * Manages the user interaction with application.
- */
-    private final UserInterface userInterface;
+    /**
+     * Manages the user interaction with application.
+     */
+    private final UserInteraction userInteraction;
 
-/**
- * Constructs an {@code ApplicationFacade} instance with the provided components.
- *
- * @param algorithmExecution the service responsible for pathfinding algorithm specified in {@link AlgorithmExecution}.
- * @param graphBuilder the service responsible for building teleportation graph based on {@link GraphBuilder}.
- * @param userInterface the service responsible for interacting with the user using {@link UserInterface}.
- */
-    public ApplicationFacade(AlgorithmExecution algorithmExecution, GraphBuilder graphBuilder, UserInterface userInterface) {
-        this.algorithmExecution = algorithmExecution;
-        this.graphBuilder = graphBuilder;
-        this.userInterface = userInterface;
+    /**
+     * Provides logging functionality for algorithm-related operations.
+     **/
+    private final AlgorithmLoggerService loggerService;
+
+
+    /**
+     * Constructs an {@code ApplicationFacade} instance with the provided components.
+     *
+     * @param algorithmService the service responsible for executing pathfinding algorithms.
+     * @param graphBuilder the service responsible for building the graph representation.
+     * @param userInteraction the service responsible for interaction with the user.
+     * @param loggerService the service for logging algorithm execution results.
+     */
+    public ApplicationFacade(AlgorithmService algorithmService, GraphBuilderService graphBuilder, UserInteraction userInteraction, AlgorithmLoggerService loggerService) {
+        this.algorithmService = algorithmService;
+        this.graph = graphBuilder.buildGraph();
+        this.userInteraction = userInteraction;
+        this.loggerService = loggerService;
     }
 
-/**
- * Runs the application logic to calculate the teleportation route based on details provided by user.
- * <p>
- * A {@link UserInterface#townChoice()} method, display list of towns and ask user to choose start town,
- * destination town as well as path type. Builds a {@link GraphBuilder#buildGraph()} graph representing the teleportation
- * routes between towns. Executes the selected algorithm {@link AlgorithmExecution#executeAlgorithm(AlgorithmType, Graph, String, String)},
- * to calculate the path.
- * </p>
- *
- * @return a {@link DTOPathResult} containing the result of the pathfinding operations.
- */
-    public DTOPathResult runApplication() {
-        UserInput userInput = userInterface.townChoice();
+    /**
+     * Finds a path based on user input and executes the selected pathfinding algorithm.
+     *
+     * @return {@link DTOPathResult} containing the pathfinding result.
+     */
+    public DTOPathResult findPath() {
 
-        Graph graph = graphBuilder.buildGraph();
+        UserInput userChoice = userInteraction.townChoice();
 
-        return algorithmExecution.executeAlgorithm(
-                userInput.getPathType(),
-                graph,
-                userInput.getStartTown(),
-                userInput.getEndTown());
+        DTOPathResult result = algorithmService.getAlgorithm(userChoice.getPathType()).algorithmPath(graph, userChoice.getStartTown(), userChoice.getEndTown());
+
+        loggerService.log(userChoice.getPathType(), result);
+
+        return result;
     }
 }
