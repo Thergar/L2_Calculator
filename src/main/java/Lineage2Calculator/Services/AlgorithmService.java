@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -21,13 +22,21 @@ import java.util.stream.Collectors;
 public class AlgorithmService {
 
     private final Map<String, PathfindingAlgorithm> algorithmMap;
-    //private final PathReconstruct pathReconstruct;
 
     public AlgorithmService(List<PathfindingAlgorithm> algorithms, AlgorithmLoggerService loggerService) {
         this.algorithmMap = algorithms.stream()
                 .collect(Collectors
                         .toMap(algorithm -> algorithm.getClass()
                                 .getSimpleName(), algorithm -> algorithm));
+    }
+
+    /**
+     * Retrieves the names of all registered pathfinding algorithms.
+     *
+     * @return a set of strings containing the names of available algorithms.
+     */
+    public Set<String> getAlgorithmNames() {
+        return algorithmMap.keySet();
     }
 
     /**

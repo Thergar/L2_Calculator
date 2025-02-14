@@ -4,6 +4,7 @@ import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The {@code ErrorHandling} class provides methods for validating
@@ -32,6 +33,20 @@ public class ErrorHandling {
     public void validateTownName(String town, List<String> validTown) {
         if (!validTown.contains(town)) {
             throw new IllegalArgumentException("The town \"" + town + "\" does not exist in the graph.");
+        }
+    }
+
+    /**
+     * Validates if the provided algorithm type exists in the set of supported algorithm types.
+     *
+     * @param algorithmType the name of the algorithm type to validate.
+     * @param algorithmNames a set of valid algorithm names.
+     * @throws IllegalArgumentException if the provided algorithm type does not exist in the set of valid algorithm names.
+     */
+    public void validateAlgorithmType(String algorithmType, Set<String> algorithmNames) {
+
+        if (!algorithmNames.contains(algorithmType)) {
+            throw new IllegalArgumentException("The algorithm type \"" + algorithmType + "\" does not exist.");
         }
     }
 
