@@ -45,3 +45,4 @@ bin/
 /src/main/resources/database.properties
 .log
 src/main/resources/.env
+.env

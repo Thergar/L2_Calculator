@@ -1,11 +1,13 @@
 package Lineage2Calculator.InteractionManager;
 
 import Lineage2Calculator.Errors.ErrorHandling;
+import Lineage2Calculator.Services.AlgorithmService;
 import Lineage2Calculator.Services.TownService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * The {@code UserInput} class is responsible for managing user interactions.
@@ -26,6 +28,8 @@ public class UserInteraction {
     /** Service for validating town names and handling errors in user interaction. */
     private final ErrorHandling errorHandling;
 
+    private final AlgorithmService algorithmService;
+
 
     /**
      * Constructs a new {@code UserInteraction} instance with the required dependencies.
@@ -34,10 +38,11 @@ public class UserInteraction {
      * @param scanner the scanner for reading user input.
      * @param errorHandling the service for validating user input and throwing appropriate exceptions.
      */
-    public UserInteraction(TownService townService, Scanner scanner, ErrorHandling errorHandling) {
+    public UserInteraction(TownService townService, Scanner scanner, ErrorHandling errorHandling, AlgorithmService algorithmService) {
         this.townService = townService;
         this.scanner = scanner;
         this.errorHandling = errorHandling;
+        this.algorithmService = algorithmService;
     }
 
     /**
@@ -48,19 +53,22 @@ public class UserInteraction {
      * </p>
      * @return a {@link UserInput} object containing the user's validated selections.
      */
-    public UserInput townChoice() {
+    public UserInput userChoice() {
         List<String> towns = townService.getAllTownNames();
+        Set<String> algorithms = algorithmService.getAlgorithmNames();
         System.out.println("List of towns: " + String.join(", ", towns));
 
-        String startTown = getUserSelection("Please select the town you are teleporting from:", towns);
-        String endTown = getUserSelection("Please select your destination town:", towns);
-        String algorithmName = getAlgorithmSelection();
+        String startTown = getUserTownSelection("Please select the town you are teleporting from:", towns);
+        String endTown = getUserTownSelection("Please select your destination town:", towns);
+
+        System.out.println("list of algorithms: " + String.join(", ", algorithms.stream().toList()));
+        String algorithmName = getUserAlgorithmSelection("Now please select the path type: 'DijkstraAlgorithm' for shortest path or 'BFSAlgorithm' for fastest path.", algorithms);
 
         return new UserInput(startTown, endTown, algorithmName);
     }
 
     /**
-     * Prompts the user to select a valid town from the provided list.
+     * Prompts the user to select a valid name from the provided list of towns.
      *
      * <p>
      *     Method display provided prompt message and validates the user's input.
@@ -70,12 +78,12 @@ public class UserInteraction {
      * @param validOptions the list of valid town names
      * @return a validate town name provided by the user
      */
-    private String getUserSelection(String message, List<String> validOptions) {
+    private String getUserTownSelection(String message, List<String> validOptions) {
         do {
             System.out.println(message);
             String userInput = scanner.nextLine().trim();
 
-            if (isValidTown(userInput, validOptions)) {
+            if (isTownValid(userInput, validOptions)) {
                 return userInput;
             } else {
                 System.out.println("Invalid choice! Please select a valid town.");
@@ -90,7 +98,7 @@ public class UserInteraction {
      * @param validOptions  list of available towns in graph.
      * @return True if town exists in graph otherwise return false.
      */
-    private boolean isValidTown(String town, List<String> validOptions) {
+    private boolean isTownValid(String town, List<String> validOptions) {
 
         try {
             errorHandling.validateTownName(town, validOptions);
@@ -100,19 +108,38 @@ public class UserInteraction {
     }
 
     /**
-     * Prompts the user to select a valid algorithm type.
+     * Prompts the user to select a valid algorithm from the provided set of algorithms.
      *
-     * @return the chosen algorithm name
+     * @param message the prompt message to display.
+     * @param algorithms the set of available algorithms to choose from.
+     * @return the name of selected algorithm.
      */
-     private String getAlgorithmSelection() {
-        String algorithm;
-        do {
-            System.out.println("Now please select the path type: 'Dijkstra' for shortest path or 'BFS' for fastest path.");
-            algorithm = scanner.nextLine().trim();
-            if (!algorithm.equals("DijkstraAlgorithm") && !algorithm.equals("BFSAlgorithm")) {
-                System.out.println("Invalid choice! Type 'DijkstraAlgorithm' or 'BFSAlgorithm'.");
-            }
-        } while (!algorithm.equals("DijkstraAlgorithm") && !algorithm.equals("BFSAlgorithm"));
-        return algorithm;
+    private String getUserAlgorithmSelection(String message, Set<String> algorithms) {
+         do {
+             System.out.println(message);
+             String userInput = scanner.nextLine().trim();
+
+             if (isAlgorithmValid(userInput, algorithms)) {
+                 return userInput;
+             } else {
+                 System.out.println("Invalid choice! Please select a valid algorithm.");
+             }
+         } while (true);
+    }
+
+    /**
+     * Checks if the provided algorithm type is valid.
+     *
+     * @param algorithmType the type of algorithm provided by user.
+     * @param algorithms the set of valid algorithm names.
+     * @return true if the algorithm type is valid, false otherwise.
+     */
+    private boolean isAlgorithmValid(String algorithmType, Set<String> algorithms) {
+
+        try {
+            errorHandling.validateAlgorithmType(algorithmType, algorithms);
+            return true;
+        } catch (IllegalArgumentException e) {}
+        return false;
     }
 }

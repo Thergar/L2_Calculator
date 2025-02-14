@@ -1,9 +1,15 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     id("java")
     id("application")
 
     id("org.springframework.boot") version "3.4.2"
     id("io.spring.dependency-management") version "1.1.7"
+}
+
+tasks.named<BootJar>("bootJar") {
+    archiveFileName.set("L2_Calculator.jar")
 }
 
 
@@ -43,7 +49,7 @@ tasks.withType<JavaExec> {
     jvmArgs = listOf("-Xmx1024m", "-Xms512m")
 }
 
-application {
-    mainClass = "Main"
+springBoot {
+    mainClass.set("Lineage2Calculator.Main")
 }
 

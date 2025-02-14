@@ -62,7 +62,7 @@ public class ApplicationFacade {
      */
     public DTOPathResult findPath() {
 
-        UserInput userChoice = userInteraction.townChoice();
+        UserInput userChoice = userInteraction.userChoice();
 
         DTOPathResult result = algorithmService.getAlgorithm(userChoice.getPathType()).algorithmPath(graph, userChoice.getStartTown(), userChoice.getEndTown());
 
