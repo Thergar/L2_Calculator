@@ -3,8 +3,8 @@ package Lineage2Calculator.Services;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A service class responsible for constructing a {@link Graph} representing towns and teleportation routes
@@ -48,7 +48,7 @@ public class GraphBuilderService {
         Graph graph = new Graph();
 
         // Retrieve all towns from database.
-        List<String> allTowns = townService.getAllTownNames();
+        Set<String> allTowns = townService.getAllTownNames();
 
         // Add each town and its connections to the graph.
         for (String town : allTowns) {

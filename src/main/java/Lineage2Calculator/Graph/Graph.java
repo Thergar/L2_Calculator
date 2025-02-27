@@ -82,7 +82,7 @@ public class Graph {
  * @param townName the town to check.
  * @return true if the town exists in the graph.
  */
-    public boolean containsTowns(String townName) {
+    public boolean containsTown(String townName) {
         return adjacencyMap.containsKey(townName);
     }
 }

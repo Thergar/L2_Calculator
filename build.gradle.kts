@@ -35,6 +35,10 @@ dependencies {
     // Dependencies for tests.
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
+
+    //Mockito dependencies.
+    testImplementation("org.mockito:mockito-core:5.15.2")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.2.0")
 }
 
 tasks.test {

@@ -1,6 +1,7 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.Utils.DTOPathResult;
+import Lineage2Calculator.DTOPathResult.DTOPathResult;
+import Lineage2Calculator.DTOPathResult.DTOPathResultFactory;
 import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
@@ -44,8 +45,8 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     */
     public DTOPathResult findCheapestPath(Graph graph, String startTown, String endTown) {
 
-        // Validate existence of startTown and endTown exist in the graph.
-        errorHandling.validatePathBetweenTowns(graph, startTown, endTown);
+        // Validate existence of startTown and endTown in the graph.
+        errorHandling.validateDistinctTowns(startTown, endTown);
 
         // The map that stores the lowest value (price) of reaching the city.
         Map<String, Integer> minCost = new HashMap<>();
@@ -72,9 +73,6 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 break;
             }
 
-            // Retrieves neighbors of current towns.
-            //Map<String, Integer> neighbors = graph.getNeighbors(currentTown);
-
             // Iterates through neighbors and updates cost.
             for (Map.Entry<String, Integer> neighborEntry : graph.getNeighbors(currentTown).entrySet()) {
 
@@ -82,6 +80,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 int cost = neighborEntry.getValue();
 
                 int newCost = minCost.get(currentTown) + cost;
+
                 if (newCost < minCost.get(neighbor)) {
                     minCost.put(neighbor, newCost);
                     previousTown.put(neighbor, currentTown);
@@ -91,15 +90,10 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         }
 
         // Reconstructs the path from destination town to starting town.
-        List<String> path = pathReconstruct.reconstructPath(previousTown, endTown);
+        List<String> path = pathReconstruct.reconstructPath(previousTown, startTown, endTown);
         int totalCost = minCost.get(endTown);
 
-        // Handles error when cannot find path from the start town to the destination town.
-        if (!previousTown.containsKey(endTown)) {
-            errorHandling.pathNotFound(startTown, endTown);
-        }
-
-        return DTOPathResult.forDijkstra(path, totalCost);
+        return DTOPathResultFactory.forDijkstra(path, totalCost);
     }
 
     @Override
@@ -107,3 +101,4 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         return findCheapestPath(graph, startTown, endTown);
     }
 }
+

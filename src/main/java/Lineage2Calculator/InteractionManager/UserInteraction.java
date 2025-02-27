@@ -5,7 +5,6 @@ import Lineage2Calculator.Services.AlgorithmService;
 import Lineage2Calculator.Services.TownService;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -54,7 +53,7 @@ public class UserInteraction {
      * @return a {@link UserInput} object containing the user's validated selections.
      */
     public UserInput userChoice() {
-        List<String> towns = townService.getAllTownNames();
+        Set<String> towns = townService.getAllTownNames();
         Set<String> algorithms = algorithmService.getAlgorithmNames();
         System.out.println("List of towns: " + String.join(", ", towns));
 
@@ -78,7 +77,7 @@ public class UserInteraction {
      * @param validOptions the list of valid town names
      * @return a validate town name provided by the user
      */
-    private String getUserTownSelection(String message, List<String> validOptions) {
+    private String getUserTownSelection(String message, Set<String> validOptions) {
         do {
             System.out.println(message);
             String userInput = scanner.nextLine().trim();
@@ -98,7 +97,7 @@ public class UserInteraction {
      * @param validOptions  list of available towns in graph.
      * @return True if town exists in graph otherwise return false.
      */
-    private boolean isTownValid(String town, List<String> validOptions) {
+    private boolean isTownValid(String town, Set<String> validOptions) {
 
         try {
             errorHandling.validateTownName(town, validOptions);
@@ -143,3 +142,4 @@ public class UserInteraction {
         return false;
     }
 }
+

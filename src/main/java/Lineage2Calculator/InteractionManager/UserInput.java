@@ -54,7 +54,7 @@ public class UserInput {
      *
      * @return the type of algorithm for path calculation.
      */
-    public String getPathType() {
+    public String getAlgorithmName() {
         return algorithmName;
     }
 }
