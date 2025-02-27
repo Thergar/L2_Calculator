@@ -1,12 +1,12 @@
 package Lineage2Calculator;
 
+import Lineage2Calculator.DTOPathResult.DTOPathResult;
 import Lineage2Calculator.Graph.Graph;
 import Lineage2Calculator.InteractionManager.UserInput;
 import Lineage2Calculator.InteractionManager.UserInteraction;
 import Lineage2Calculator.Services.AlgorithmLoggerService;
 import Lineage2Calculator.Services.AlgorithmService;
 import Lineage2Calculator.Services.GraphBuilderService;
-import Lineage2Calculator.Utils.DTOPathResult;
 import org.springframework.stereotype.Service;
 
 /**
@@ -64,9 +64,9 @@ public class ApplicationFacade {
 
         UserInput userChoice = userInteraction.userChoice();
 
-        DTOPathResult result = algorithmService.getAlgorithm(userChoice.getPathType()).algorithmPath(graph, userChoice.getStartTown(), userChoice.getEndTown());
+        DTOPathResult result = algorithmService.getAlgorithm(userChoice.getAlgorithmName()).algorithmPath(graph, userChoice.getStartTown(), userChoice.getEndTown());
 
-        loggerService.log(userChoice.getPathType(), result);
+        loggerService.log(userChoice.getAlgorithmName(), result);
 
         return result;
     }

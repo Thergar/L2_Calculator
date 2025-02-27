@@ -1,6 +1,6 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.Utils.DTOPathResult;
+import Lineage2Calculator.DTOPathResult.DTOPathResult;
 import Lineage2Calculator.Graph.Graph;
 
 /**
@@ -10,5 +10,4 @@ import Lineage2Calculator.Graph.Graph;
 public interface PathfindingAlgorithm {
 
      DTOPathResult algorithmPath(Graph graph, String startTown, String endTown);
-
 }

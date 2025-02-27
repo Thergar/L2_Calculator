@@ -3,7 +3,7 @@ package Lineage2Calculator.Errors;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,7 +30,7 @@ public class ErrorHandling {
      * @param validTown list of valid town names.
      * @throws IllegalArgumentException if the town name does not exist in the validTown list.
      */
-    public void validateTownName(String town, List<String> validTown) {
+    public void validateTownName(String town, Set<String> validTown) {
         if (!validTown.contains(town)) {
             throw new IllegalArgumentException("The town \"" + town + "\" does not exist in the graph.");
         }
@@ -51,19 +51,14 @@ public class ErrorHandling {
     }
 
     /**
-     * Validates the starting town and destination town in the graph.
-     * Ensure that both towns exists in the graph and are not the same.
+     * Validates the starting town and destination.
+     * Ensure that both towns are not the same.
      *
-     * @param graph the graph containing towns and teleportation routes.
      * @param startTown the name of starting town.
      * @param endTown the name of destination town.
      */
-    public void validatePathBetweenTowns(Graph graph, String startTown, String endTown) {
-        if (!graph.containsTowns(startTown)) {
-            throw new IllegalArgumentException("Starting town \"" + startTown + "\" does not exist in the graph.");
-        } else if (!graph.containsTowns(endTown)) {
-            throw new IllegalArgumentException("Destination town \"" + endTown + "\" does not exist in the graph.");
-        } else if (startTown.equals(endTown)) {
+    public void validateDistinctTowns(String startTown, String endTown) {
+        if (startTown.equals(endTown)) {
             throw new IllegalArgumentException("Starting town and destination town cannot be the same.");
         }
     }
@@ -74,7 +69,9 @@ public class ErrorHandling {
     *  @param startTown the name of starting town.
     *  @param endTown the name of destination town.
     */
-    public void pathNotFound(String startTown, String endTown) {
-        throw new IllegalArgumentException("No path found from \"" + startTown + "\" to \"" + endTown + "\".");
+    public void pathNotFound(Map<String, String> previousTown, String startTown, String endTown) {
+        if (!previousTown.containsKey(endTown)) {
+            throw new IllegalArgumentException("No path found from \"" + startTown + "\" to \"" + endTown + "\".");
+        }
     }
 }

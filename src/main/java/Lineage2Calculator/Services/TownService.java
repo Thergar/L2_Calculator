@@ -5,10 +5,8 @@ import Lineage2Calculator.Entities.TownRepository.TownRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service class responsible for interacting with the database to retrieve town and teleportation data.
@@ -35,14 +33,13 @@ public class TownService {
 
     /**
      *
-     * Retrieves a list of all towns from database.
+     * Retrieves a set of all towns from database.
      *
-     * @return a list containing every town name from database.
+     * @return a set containing every town name from database.
      */
-    public List<String> getAllTownNames() {
+    public Set<String> getAllTownNames() {
         return townRepository.findAll().stream()
-                .map(Town::getTownName)
-                .toList();
+                .map(Town::getTownName).collect(Collectors.toSet());
     }
 
     /**
