@@ -1,4 +1,4 @@
-package Lineage2Calculator.InteractionManager;
+package Lineage2Calculator.DTO;
 
 /**
  * Class responsible for storing user inputs for the teleportation path Calculation.
@@ -7,7 +7,7 @@ package Lineage2Calculator.InteractionManager;
  *     and the type of algorithm to be used for path calculation.
  * </p>
  */
-public class UserInput {
+public class DTOUserInput {
 
     /** The name of the starting town. */
     private final String startTown;
@@ -26,7 +26,7 @@ public class UserInput {
      * @param endTown the name of destination town.
      * @param algorithmName the type of algorithm.
      */
-    public UserInput(String startTown, String endTown, String algorithmName) {
+    public DTOUserInput(String startTown, String endTown, String algorithmName) {
         this.startTown = startTown;
         this.endTown = endTown;
         this.algorithmName = algorithmName;

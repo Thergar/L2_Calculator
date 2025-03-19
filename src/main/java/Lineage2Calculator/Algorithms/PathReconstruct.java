@@ -25,7 +25,7 @@ public class PathReconstruct {
         this.errorHandling = errorHandling;
     }
 
-     /**
+    /**
      * Reconstructs a path based on the provided map of previous towns.
      * <p>
      * The map contains information about which town was visited before reaching another town,
@@ -36,20 +36,19 @@ public class PathReconstruct {
      * @param endTown the name of the destination town.
      * @return a list of towns representing the path from the start to the destination.
      */
-    protected List<String> reconstructPath(Map<String, String> previousTown, String startTown, String endTown) throws IllegalArgumentException {
+
+    protected List<String> reconstructPath(Map<String, String> previousTown, String startTown, String endTown) {
 
         LinkedList<String> path = new LinkedList<>();
 
         // Validate the input data using the error handling service
         errorHandling.pathNotFound(previousTown, startTown, endTown);
 
-        // Reconstruct the path by tracing backwards from the end town
         String step = endTown;
         while (step != null) {
             path.addFirst(step);
             step = previousTown.get(step);
         }
-
         return path;
     }
 }

@@ -1,6 +1,6 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.DTOPathResult.DTOPathResult;
+import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 public class DijkstraAlgorithmTest {

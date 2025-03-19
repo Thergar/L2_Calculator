@@ -71,7 +71,7 @@ public class GraphTest {
 
         graph.addTown(town1);
 
-        assertTrue(graph.containsTown(town1));
-        assertFalse(graph.containsTown("falseTown"));
+        assertTrue(graph.containsTowns(town1));
+        assertFalse(graph.containsTowns("falseTown"));
     }
 }

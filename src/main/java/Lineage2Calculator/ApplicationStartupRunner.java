@@ -40,7 +40,7 @@ public class ApplicationStartupRunner implements ApplicationRunner {
      * @param args the arguments passed during application startup
      */
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws Exception {
 
         applicationFacade.findPath();
     }

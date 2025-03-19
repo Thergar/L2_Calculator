@@ -1,6 +1,6 @@
 package Lineage2Calculator.Services;
 
-import Lineage2Calculator.DTOPathResult.DTOPathResult;
+import Lineage2Calculator.DTO.DTOPathResult;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 @Component
 public class AlgorithmLoggerService {
 
+
     private void commonLog(String algorithmName, DTOPathResult result) {
         System.out.println("Using " + algorithmName + " algorithm");
         System.out.println("Path: " + result.getPath());
@@ -22,7 +23,7 @@ public class AlgorithmLoggerService {
            "DijkstraAlgorithm", result -> commonLog("Dijkstra", result),
            "BFSAlgorithm", result -> {
                commonLog("BFS", result);
-                   System.out.println("Number of steps: " + result.getSteps());
+               System.out.println("Number of steps: " + result.getSteps());
            }
    );
 

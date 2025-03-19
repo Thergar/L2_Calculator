@@ -1,4 +1,4 @@
-package Lineage2Calculator.DTOPathResult;
+package Lineage2Calculator.DTO;
 
 import java.util.List;
 

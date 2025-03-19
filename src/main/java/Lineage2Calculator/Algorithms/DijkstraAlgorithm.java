@@ -1,7 +1,7 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.DTOPathResult.DTOPathResult;
-import Lineage2Calculator.DTOPathResult.DTOPathResultFactory;
+import Lineage2Calculator.DTO.DTOPathResult;
+import Lineage2Calculator.DTO.DTOPathResultFactory;
 import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
@@ -45,7 +45,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     */
     public DTOPathResult findCheapestPath(Graph graph, String startTown, String endTown) {
 
-        // Validate existence of startTown and endTown in the graph.
+        // Validate existence of startTown and endTown exist in the graph.
         errorHandling.validateDistinctTowns(startTown, endTown);
 
         // The map that stores the lowest value (price) of reaching the city.
@@ -73,6 +73,9 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 break;
             }
 
+            // Retrieves neighbors of current towns.
+            //Map<String, Integer> neighbors = graph.getNeighbors(currentTown);
+
             // Iterates through neighbors and updates cost.
             for (Map.Entry<String, Integer> neighborEntry : graph.getNeighbors(currentTown).entrySet()) {
 
@@ -80,7 +83,6 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 int cost = neighborEntry.getValue();
 
                 int newCost = minCost.get(currentTown) + cost;
-
                 if (newCost < minCost.get(neighbor)) {
                     minCost.put(neighbor, newCost);
                     previousTown.put(neighbor, currentTown);
@@ -101,4 +103,3 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         return findCheapestPath(graph, startTown, endTown);
     }
 }
-

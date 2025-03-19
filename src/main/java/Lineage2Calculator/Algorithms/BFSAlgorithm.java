@@ -1,7 +1,7 @@
 package Lineage2Calculator.Algorithms;
 
-import Lineage2Calculator.DTOPathResult.DTOPathResult;
-import Lineage2Calculator.DTOPathResult.DTOPathResultFactory;
+import Lineage2Calculator.DTO.DTOPathResult;
+import Lineage2Calculator.DTO.DTOPathResultFactory;
 import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
@@ -44,56 +44,58 @@ public class BFSAlgorithm implements PathfindingAlgorithm {
      */
     public DTOPathResult findShortestPath(Graph graph, String startTown, String endTown) {
 
-        // Validate the existence of startTown and endTown exist in the graph.
-        errorHandling.validateDistinctTowns(startTown, endTown);
+            // Validate the existence of startTown and endTown exist in the graph.
+            errorHandling.validateDistinctTowns(startTown, endTown);
 
-        // Initialize a queue for towns to visit. BFS requires operations on first and last elements.
-        Queue<String> queue = new LinkedList<>();
+            // Initialize a queue for towns to visit. BFS requires operations on first and last elements.
+            Queue<String> queue = new LinkedList<>();
 
-        // Map to store previous town in the shortest path.
-        Map<String, String> previousTown = new HashMap<>();
+            // Map to store previous town in the shortest path.
+            Map<String, String> previousTown = new HashMap<>();
 
-        // Map to store teleportation cost for each town.
-        Map<String, Integer> minCosts = new HashMap<>();
+            // Map to store teleportation cost for each town.
+            Map<String, Integer> minCosts = new HashMap<>();
 
-        // Initializes the starting path with the start town, add it to visited Set, and set its initial cost as zero.
-        queue.add(startTown);
-        previousTown.put(startTown, null);
-        minCosts.put(startTown, 0);
+            // Initializes the starting path with the start town, add it to visited Set, and set its initial cost as zero.
+            queue.add(startTown);
+            previousTown.put(startTown, null);
+            minCosts.put(startTown, 0);
 
-        // Main loop for BFS algorithm.
-        while (!queue.isEmpty()) {
+            // Lineage2Calculator.Main loop for BFS algorithm.
+            while (!queue.isEmpty()) {
 
-            //Retrieve and remove the first path from the queue. Sets last town at path list as "current Town" and gets path costs.
-            String currentTown = queue.poll();
+                //Retrieve and remove the first path from the queue. Sets last town at path list as "current Town" and gets path costs.
+                String currentTown = queue.poll();
 
-            // If the current town is the destination town, break out from loop.
-            if (currentTown.equals(endTown)) {
-                break;
-            }
+                // If the current town is the destination town, break out from loop.
+                if (currentTown.equals(endTown)) {
+                    break;
+                }
 
-            // Iterate through each neighbor town and its teleportation cost.
-            for (Map.Entry<String, Integer> neighborEntry : graph.getNeighbors(currentTown).entrySet()) {
+                // Iterate through each neighbor town and its teleportation cost.
+                for (Map.Entry<String, Integer> neighborEntry : graph.getNeighbors(currentTown).entrySet()) {
 
-                String neighbor = neighborEntry.getKey();
-                int cost = neighborEntry.getValue();
+                    String neighbor = neighborEntry.getKey();
+                    int cost = neighborEntry.getValue();
 
-                // If the neighbor has not been visited yet, add it to visited Set.
-                if (!previousTown.containsKey(neighbor)) {
-                    previousTown.put(neighbor, currentTown);
+                    // If the neighbor has not been visited yet, add it to visited Set.
+                    if (!previousTown.containsKey(neighbor)) {
+                        previousTown.put(neighbor, currentTown);
 
-                    //  Calculates the new teleportation cost and store it in pathCost Map.
-                    minCosts.put(neighbor, minCosts.get(currentTown) + cost);
-                    queue.add(neighbor);
+                        minCosts.put(neighbor, minCosts.get(currentTown) + cost);
+                        queue.add(neighbor);
+
+                        //  Calculates the new teleportation cost and store it in pathCost Map.
+                    }
                 }
             }
-        }
 
-        List<String> path = pathReconstruct.reconstructPath(previousTown, startTown, endTown);
-        int totalCost = minCosts.get(endTown);
-        int step = path.size() - 1;
+            List<String> path = pathReconstruct.reconstructPath(previousTown, startTown, endTown);
+            int totalCost = minCosts.get(endTown);
 
-        return DTOPathResultFactory.forBFS(path, totalCost, step);
+            int step = path.size() - 1;
+
+            return DTOPathResultFactory.forBFS(path, totalCost, step);
     }
 
     @Override
