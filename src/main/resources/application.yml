@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://l2_postgres:5432/L2_towns
+    username: postgres
+    password: lineage2
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      show-sql: true

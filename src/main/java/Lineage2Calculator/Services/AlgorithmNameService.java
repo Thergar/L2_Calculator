@@ -19,11 +19,12 @@ import java.util.stream.Collectors;
  * </p>
  */
 @Service
-public class AlgorithmService {
+public class AlgorithmNameService {
 
     private final Map<String, PathfindingAlgorithm> algorithmMap;
+    //private final PathReconstruct pathReconstruct;
 
-    public AlgorithmService(List<PathfindingAlgorithm> algorithms, AlgorithmLoggerService loggerService) {
+    public AlgorithmNameService(List<PathfindingAlgorithm> algorithms, AlgorithmLoggerService loggerService) {
         this.algorithmMap = algorithms.stream()
                 .collect(Collectors
                         .toMap(algorithm -> algorithm.getClass()

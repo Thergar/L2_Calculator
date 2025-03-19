@@ -1,11 +1,11 @@
 package Lineage2Calculator;
 
-import Lineage2Calculator.DTOPathResult.DTOPathResult;
+import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.Graph.Graph;
-import Lineage2Calculator.InteractionManager.UserInput;
+import Lineage2Calculator.DTO.DTOUserInput;
 import Lineage2Calculator.InteractionManager.UserInteraction;
 import Lineage2Calculator.Services.AlgorithmLoggerService;
-import Lineage2Calculator.Services.AlgorithmService;
+import Lineage2Calculator.Services.AlgorithmNameService;
 import Lineage2Calculator.Services.GraphBuilderService;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class ApplicationFacade {
     /**
      * Executes the pathfinding algorithm specified by user.
      */
-    private final AlgorithmService algorithmService;
+    private final AlgorithmNameService algorithmService;
 
     /**
      * Builds the graph representation of teleportation routes between towns.
@@ -48,7 +48,7 @@ public class ApplicationFacade {
      * @param userInteraction the service responsible for interaction with the user.
      * @param loggerService the service for logging algorithm execution results.
      */
-    public ApplicationFacade(AlgorithmService algorithmService, GraphBuilderService graphBuilder, UserInteraction userInteraction, AlgorithmLoggerService loggerService) {
+    public ApplicationFacade(AlgorithmNameService algorithmService, GraphBuilderService graphBuilder, UserInteraction userInteraction, AlgorithmLoggerService loggerService) {
         this.algorithmService = algorithmService;
         this.graph = graphBuilder.buildGraph();
         this.userInteraction = userInteraction;
@@ -62,7 +62,7 @@ public class ApplicationFacade {
      */
     public DTOPathResult findPath() {
 
-        UserInput userChoice = userInteraction.userChoice();
+        DTOUserInput userChoice = userInteraction.setUserChoice("Heine", "Town of Oren", "BFSAlgorithm");
 
         DTOPathResult result = algorithmService.getAlgorithm(userChoice.getAlgorithmName()).algorithmPath(graph, userChoice.getStartTown(), userChoice.getEndTown());
 
