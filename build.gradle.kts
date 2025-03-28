@@ -6,6 +6,7 @@ plugins {
 
     id("org.springframework.boot") version "3.4.2"
     id("io.spring.dependency-management") version "1.1.7"
+    id("org.openjfx.javafxplugin") version "0.0.10"
 }
 
 tasks.named<BootJar>("bootJar") {
@@ -21,8 +22,16 @@ repositories {
 
 dependencies {
 
+    // Main dependencies for JavaFX
+    implementation("org.openjfx:javafx-controls:21.0.6")
+    implementation("org.openjfx:javafx-graphics:21.0.6")
+    implementation("org.openjfx:javafx-fxml:21.0.6")
+    implementation("org.openjfx:javafx-base:21.0.6")
+
+
     // Starter for Spring Boot.
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.4.2")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.4.2")
 
     // Driver for PostgresSQL.
     implementation ("org.postgresql:postgresql:42.7.5")
@@ -41,6 +50,11 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:5.2.0")
 }
 
+javafx {
+    version = "21.0.6"
+    modules = listOf("javafx.controls", "javafx.fxml")
+}
+
 tasks.test {
     useJUnitPlatform()
 }
@@ -50,10 +64,11 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.withType<JavaExec> {
-    jvmArgs = listOf("-Xmx1024m", "-Xms512m")
+    jvmArgs = listOf(
+        "-Xmx1024m", "-Xms512m",
+        "--module-path", "F:/JavaFX/lib",
+        "--add-modules", "javafx.controls,javafx.fxml,javafx.graphics"
+    )
 }
 
-springBoot {
-    mainClass.set("Lineage2Calculator.Main")
-}
 
