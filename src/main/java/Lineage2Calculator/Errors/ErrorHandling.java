@@ -1,5 +1,6 @@
 package Lineage2Calculator.Errors;
 
+import Lineage2Calculator.Errors.CustomErrors.NoPathFoundException;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +46,6 @@ public class ErrorHandling {
      * @throws IllegalArgumentException if the provided algorithm type does not exist in the set of valid algorithm names.
      */
     public void validateAlgorithmType(String algorithmType, Set<String> algorithmNames) {
-
         if (!algorithmNames.contains(algorithmType)) {
             throw new IllegalArgumentException("The algorithm type \"" + algorithmType + "\" does not exist.");
         }
@@ -72,7 +72,7 @@ public class ErrorHandling {
     */
     public void pathNotFound(Map<String, String> previousTown, String startTown, String endTown) {
         if (!previousTown.containsKey(endTown)) {
-            throw new IllegalArgumentException("No path found from \"" + startTown + "\" to \"" + endTown + "\".");
+            throw new NoPathFoundException("No path found from \"" + startTown + "\" to \"" + endTown + "\".");
         }
     }
 }
