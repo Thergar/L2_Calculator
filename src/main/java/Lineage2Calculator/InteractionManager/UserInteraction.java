@@ -2,7 +2,7 @@ package Lineage2Calculator.InteractionManager;
 
 import Lineage2Calculator.DTO.DTOUserInput;
 import Lineage2Calculator.Errors.ErrorHandling;
-import Lineage2Calculator.Services.AlgorithmNameService;
+import Lineage2Calculator.Services.Algorithm.AlgorithmService;
 import Lineage2Calculator.Services.TownService;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class UserInteraction {
     private final ErrorHandling errorHandling;
 
     /** Service for retrieving algorithm names. */
-    private final AlgorithmNameService algorithmService;
+    private final AlgorithmService algorithmService;
 
 
     /**
@@ -35,7 +35,7 @@ public class UserInteraction {
      * @param townService the service for retrieving town data.
      * @param errorHandling the service for validating user input and throwing appropriate exceptions.
      */
-    public UserInteraction(TownService townService, ErrorHandling errorHandling, AlgorithmNameService algorithmService) {
+    public UserInteraction(TownService townService, ErrorHandling errorHandling, AlgorithmService algorithmService) {
         this.townService = townService;
         this.errorHandling = errorHandling;
         this.algorithmService = algorithmService;

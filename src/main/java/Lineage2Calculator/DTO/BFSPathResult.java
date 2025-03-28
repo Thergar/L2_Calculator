@@ -25,7 +25,6 @@ public class BFSPathResult extends DTOPathResult {
     /**
      * Retrieves the number of steps taken to reach destination town.
      */
-    @Override
     public int getSteps() {
         return steps;
     }

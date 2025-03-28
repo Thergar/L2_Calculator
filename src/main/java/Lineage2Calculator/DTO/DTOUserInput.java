@@ -1,5 +1,7 @@
 package Lineage2Calculator.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Class responsible for storing user inputs for the teleportation path Calculation.
  * <p>
@@ -10,12 +12,15 @@ package Lineage2Calculator.DTO;
 public class DTOUserInput {
 
     /** The name of the starting town. */
+    @JsonProperty("startTown")
     private final String startTown;
 
     /** The name of destination town. */
+    @JsonProperty("endTown")
     private final String endTown;
 
     /** The algorithm type to be used for route calculation. */
+    @JsonProperty("algorithmName")
     private final String algorithmName;
 
     /**
@@ -26,7 +31,9 @@ public class DTOUserInput {
      * @param endTown the name of destination town.
      * @param algorithmName the type of algorithm.
      */
-    public DTOUserInput(String startTown, String endTown, String algorithmName) {
+    public DTOUserInput(@JsonProperty("startTown") String startTown,
+                        @JsonProperty("endTown") String endTown,
+                        @JsonProperty("algorithmName") String algorithmName) {
         this.startTown = startTown;
         this.endTown = endTown;
         this.algorithmName = algorithmName;

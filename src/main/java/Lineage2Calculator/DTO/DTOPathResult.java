@@ -31,8 +31,4 @@ public class DTOPathResult {
     public int getTotalCost() {
         return totalCost;
     }
-
-    public int getSteps() {
-        return 0;
-    }
 }
