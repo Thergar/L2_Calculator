@@ -1,6 +1,6 @@
-package Lineage2Calculator.Api.Controllers;
+package Lineage2Calculator.REST.Controllers;
 
-import Lineage2Calculator.Services.Algorithm.AlgorithmService;
+import Lineage2Calculator.Services.Algorithm.AlgorithmNameService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +16,9 @@ import java.util.Set;
 @CrossOrigin(origins = "*")
 public class AlgorithmController {
 
-    private final AlgorithmService algorithmNameService;
+    private final AlgorithmNameService algorithmNameService;
 
-    public AlgorithmController(AlgorithmService algorithmNameService) {
+    public AlgorithmController(AlgorithmNameService algorithmNameService) {
         this.algorithmNameService = algorithmNameService;
     }
 
@@ -28,7 +28,17 @@ public class AlgorithmController {
      *  @return a set of available algorithm names.
      */
     @GetMapping("/names")
-    public Set<String> getAllAlgorithmName() {
+    private Set<String> getAllAlgorithmName() {
         return algorithmNameService.getAlgorithmNames();
+    }
+
+    @GetMapping("/dijkstra")
+    public String getDijkstraAlgorithm() {
+        return "DijkstraAlgorithm";
+    }
+
+    @GetMapping("/bfs")
+    public String getBFSAlgorithm() {
+        return "BFSAlgorithm";
     }
 }

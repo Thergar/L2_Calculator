@@ -1,4 +1,4 @@
-package Lineage2Calculator.Api.Controllers;
+package Lineage2Calculator.REST.Controllers;
 
 import Lineage2Calculator.ApplicationFacade;
 import Lineage2Calculator.DTO.DTOPathResult;
