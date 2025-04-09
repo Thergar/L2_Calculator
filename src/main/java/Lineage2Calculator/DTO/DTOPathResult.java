@@ -1,8 +1,29 @@
 package Lineage2Calculator.DTO;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.List;
 
-public class DTOPathResult {
+/**
+ * DTO representing the result of a pathfinding algorithm.
+ * <p>
+ * Stores the route and total cost. Supports polymorphic JSON serialization, and class is designed to be immutable.
+ * </p>
+ *
+ * @see DijkstraPathResult
+ * @see BFSPathResult
+ */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DijkstraPathResult.class, name = "dijkstra"),
+        @JsonSubTypes.Type(value = BFSPathResult.class, name = "bfs")
+})
+public abstract class DTOPathResult {
 
     private final List<String> path;
     private final int totalCost;

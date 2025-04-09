@@ -1,7 +1,10 @@
 package Lineage2Calculator.DTO;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
+@JsonTypeName("dijkstra")
 public class DijkstraPathResult extends DTOPathResult {
 
     /**

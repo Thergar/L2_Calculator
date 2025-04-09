@@ -1,7 +1,10 @@
 package Lineage2Calculator.DTO;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
+@JsonTypeName("bfs")
 public class BFSPathResult extends DTOPathResult {
 
     /**
@@ -15,7 +18,6 @@ public class BFSPathResult extends DTOPathResult {
      * @param path The list of towns on the route.
      * @param totalCost The total cost for the teleportation path.
      * @param steps The number of teleportation steps taken to reach destination town
-     * @return A new DTOPathResult instance containing result for BFS algorithm.
      */
     protected BFSPathResult(List<String> path, int totalCost, int steps) {
         super(path, totalCost);

@@ -26,7 +26,7 @@ public class DTOUserInput {
     /**
      * Construct a new {@code UserInput} instance with the specified starting town,
      * destination town and algorithm type.
-     **
+     *
      * @param startTown the name of the starting town.
      * @param endTown the name of destination town.
      * @param algorithmName the type of algorithm.
