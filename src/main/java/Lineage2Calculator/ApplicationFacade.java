@@ -1,13 +1,7 @@
 package Lineage2Calculator;
 
 import Lineage2Calculator.DTO.DTOPathResult;
-import Lineage2Calculator.Graph.Graph;
-import Lineage2Calculator.DTO.DTOUserInput;
-import Lineage2Calculator.InteractionManager.UserInteraction;
-import Lineage2Calculator.Services.Algorithm.AlgorithmLoggerService;
-import Lineage2Calculator.Services.Algorithm.AlgorithmService;
 import Lineage2Calculator.Services.Algorithm.CalculateAlgorithmService;
-import Lineage2Calculator.Services.GraphBuilderService;
 import org.springframework.stereotype.Service;
 
 /**
