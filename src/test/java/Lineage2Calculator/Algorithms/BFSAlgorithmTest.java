@@ -1,5 +1,6 @@
 package Lineage2Calculator.Algorithms;
 
+import Lineage2Calculator.DTO.BFSPathResult;
 import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.Errors.ErrorHandling;
 import Lineage2Calculator.Graph.Graph;
@@ -60,7 +61,7 @@ public class BFSAlgorithmTest {
         assertNotNull(result);
         assertEquals(List.of(A, C, E), result.getPath());
         assertEquals(6, result.getTotalCost());
-        assertEquals(2, result.getSteps());
+        assertEquals(2, ((BFSPathResult) result).getSteps());
     }
 
     @Test

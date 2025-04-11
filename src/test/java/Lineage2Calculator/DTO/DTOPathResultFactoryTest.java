@@ -44,6 +44,7 @@ public class DTOPathResultFactoryTest {
         assertInstanceOf(BFSPathResult.class, result);
         assertEquals(List.of("Cracow", "Rzeszów", "Myslenice"), result.getPath());
         assertEquals(5500, result.getTotalCost());
-        assertEquals(2, result.getSteps());
+        assertInstanceOf(BFSPathResult.class, result);
+        assertEquals(steps, ((BFSPathResult) result).getSteps());
     }
 }
