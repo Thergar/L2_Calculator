@@ -2,6 +2,8 @@ package Lineage2Calculator.Errors;
 
 import Lineage2Calculator.Errors.CustomErrors.NoPathFoundException;
 import Lineage2Calculator.Graph.Graph;
+import Lineage2Calculator.Services.Algorithm.AlgorithmNameService;
+import Lineage2Calculator.Services.TownService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,6 +24,20 @@ import java.util.Set;
 public class ErrorHandling {
 
 
+    private final TownService townService;
+    private  final AlgorithmNameService algorithmNameService;
+
+    /**
+     * Constructs an instance of the {@code ErrorHandling} class.
+     * 
+     * @param townService the service responsible for managing towns and their validations.
+     * @param algorithmNameService the service responsible for retrieving and validating algorithm names.
+     */
+    public ErrorHandling(TownService townService, AlgorithmNameService algorithmNameService) {
+        this.townService = townService;
+        this.algorithmNameService = algorithmNameService;
+    }
+
     /**
      * Validates if the provided town name exists in the list of towns.
      *
@@ -29,11 +45,10 @@ public class ErrorHandling {
      *     Throws an exception and message if the town name is invalid.
      * </p>
      * @param town the name of town to validate.
-     * @param validTown list of valid town names.
      * @throws IllegalArgumentException if the town name does not exist in the validTown list.
      */
-    public void validateTownName(String town, Set<String> validTown) {
-        if (!validTown.contains(town)) {
+    public void validateTownName(String town) {
+        if (!townService.getAllTownNames().contains(town)) {
             throw new IllegalArgumentException("The town \"" + town + "\" does not exist in the graph.");
         }
     }
@@ -42,11 +57,10 @@ public class ErrorHandling {
      * Validates if the provided algorithm type exists in the set of supported algorithm types.
      *
      * @param algorithmType the name of the algorithm type to validate.
-     * @param algorithmNames a set of valid algorithm names.
      * @throws IllegalArgumentException if the provided algorithm type does not exist in the set of valid algorithm names.
      */
-    public void validateAlgorithmType(String algorithmType, Set<String> algorithmNames) {
-        if (!algorithmNames.contains(algorithmType)) {
+    public void validateAlgorithmType(String algorithmType) {
+        if (!algorithmNameService.getAlgorithmNames().contains(algorithmType)) {
             throw new IllegalArgumentException("The algorithm type \"" + algorithmType + "\" does not exist.");
         }
     }
