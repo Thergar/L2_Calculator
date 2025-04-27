@@ -5,8 +5,10 @@ import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.DTO.DTOUserInput;
 import Lineage2CalculatorGUI.API.PathfindingApi;
 import Lineage2CalculatorGUI.Scenes.CalculatorScene.Components.*;
+import Lineage2CalculatorGUI.Utils.Validations.EmptyFieldChecker;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -61,29 +63,30 @@ public class CalculatorScene {
         gridPane.add(calculateButton.getCalculatorButton(), 1, 1);
         gridPane.add(resultBox.getResultText(), 0, 2, 2, 1);
 
+
+
         // Handle calculate button action.
         calculateButton.getCalculatorButton().setOnAction(actionEvent -> {
-            String startTown = startCitySelector.getCityComboBox().getValue();
-            String destinationTown = destinationCitySelector.getCityComboBox().getValue();
-            String algorithmType = algorithmSelector.getAlgorithmGroup().getSelectedToggle().getUserData().toString();
+                String startTown = startCitySelector.getCityComboBox().getValue();
+                String destinationTown = destinationCitySelector.getCityComboBox().getValue();
+                String algorithmType = algorithmSelector.getAlgorithmGroup().getSelectedToggle().getUserData().toString();
 
-            DTOUserInput userInput = new DTOUserInput(startTown, destinationTown, algorithmType);
-            PathfindingApi pathfindingApi = new PathfindingApi();
+                DTOUserInput userInput = new DTOUserInput(startTown, destinationTown, algorithmType);
+                PathfindingApi pathfindingApi = new PathfindingApi();
 
-            // Request API to process user input.
-            DTOPathResult result = PathfindingApi.processCalculate(userInput);
+                // Request API to process user input.
+                DTOPathResult result = PathfindingApi.processCalculate(userInput);
 
-            // Build and display the result.
-            StringBuilder output = new StringBuilder();
-            output.append("Path: ").append(String.join(" -> ", result.getPath())).append("\n");
-            output.append("Total cost: ").append(result.getTotalCost()).append(" adena");
+                // Build and display the result.
+                StringBuilder output = new StringBuilder();
+                output.append("Path: ").append(String.join(" -> ", result.getPath())).append("\n");
+                output.append("Total cost: ").append(result.getTotalCost()).append(" adena");
 
-            if (result instanceof BFSPathResult bfsPathResult) {
-                output.append("\nSteps: ").append(bfsPathResult.getSteps());
-            }
+                if (result instanceof BFSPathResult bfsPathResult) {
+                    output.append("\nSteps: ").append(bfsPathResult.getSteps());
+                }
 
-            resultBox.getResultText().setText(output.toString());
-
+                resultBox.getResultText().setText(output.toString());
         });
 
         // Create calculator scene.
