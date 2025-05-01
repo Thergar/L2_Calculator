@@ -1,6 +1,7 @@
 package Lineage2CalculatorGUI.Scenes.CalculatorScene.Components;
 
 import Lineage2CalculatorGUI.API.TownApi;
+import Lineage2CalculatorGUI.Utils.CitySuggestion;
 import Lineage2CalculatorGUI.Utils.Validations.EmptyFieldChecker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +26,8 @@ public class CitySelector {
     private final ComboBox<String> cityComboBox;
 
     private final EmptyFieldChecker emptyFieldChecker;
+
+    private final CitySuggestion citySuggestion;
     /**
      * Constructs a city selector with a given label and fills the combo box with town names.
      *
@@ -41,12 +44,15 @@ public class CitySelector {
         validationMessage.setVisible(false);
 
         this.emptyFieldChecker = new EmptyFieldChecker();
+        this.citySuggestion = new CitySuggestion();
 
         this.cityComboBox = new ComboBox<>();
         this.cityComboBox.setPrefWidth(150);
         this.cityComboBox.setPromptText("Select town");
         this.cityComboBox.getItems().addAll(validTowns);
         this.cityComboBox.setEditable(true);
+
+        citySuggestion.autosuggestion(this.cityComboBox, validTowns);
 
         this.cityComboBox.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
