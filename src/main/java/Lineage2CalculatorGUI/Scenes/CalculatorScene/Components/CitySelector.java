@@ -54,11 +54,7 @@ public class CitySelector {
 
         citySuggestion.autosuggestion(this.cityComboBox, validTowns);
 
-        this.cityComboBox.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                emptyFieldChecker.validateComboBox(cityComboBox, validationMessage, validTowns);
-            }
-        });
+        emptyFieldChecker.cityValidation(cityComboBox, validationMessage, validTowns);
 
         this.container = new VBox(10, cityLabel, cityComboBox, validationMessage);
     }
