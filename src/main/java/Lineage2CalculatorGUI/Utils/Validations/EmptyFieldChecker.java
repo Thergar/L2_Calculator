@@ -21,7 +21,7 @@ public class EmptyFieldChecker {
      * @param validationMessage the Label to display the validation message
      * @return true if the ComboBox has a valid value, false otherwise
      */
-    public boolean validateComboBox(ComboBox<String> comboBox, Label validationMessage, List<String> validTowns) {
+    private boolean validateComboBox(ComboBox<String> comboBox, Label validationMessage, List<String> validTowns) {
         String value = comboBox.getValue();
 
         if (value.isEmpty()) {
@@ -37,6 +37,21 @@ public class EmptyFieldChecker {
             validationMessage.setVisible(false);
             return true;
         }
+    }
+
+    /**
+     * Attaches validation to the ComboBox.
+     *
+     * @param comboBox the ComboBox to attach validation to
+     * @param validationMessage the Label to display the validation message
+     * @param validTowns the list of valid town names
+     */
+    public void cityValidation(ComboBox<String> comboBox, Label validationMessage, List<String> validTowns) {
+        comboBox.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                validateComboBox(comboBox, validationMessage, validTowns);
+            }
+        });
     }
 
     /**
@@ -64,6 +79,13 @@ public class EmptyFieldChecker {
         }
     }
 
+    /**
+     * Helper method to apply validation styles and error messages to a ComboBox.
+     *
+     * @param comboBox the ComboBox to apply validation to
+     * @param validationMessage the Label to display the validation message
+     * @param text the error message to display
+     */
     private void validationHelper(ComboBox<String> comboBox, Label validationMessage, String text) {
         comboBox.setStyle("fx-border-color: red;");
 
