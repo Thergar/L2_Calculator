@@ -1,15 +1,17 @@
 package Lineage2CalculatorGUI.API;
 
-/**
- * The {@code ApiConfiguration} class holds shared configuration
- * for connecting to the backend REST API.
- *
- * <p>
- * It defines the base URL for API requests and initializes the {@link RestTemplate} instance.
- * </p>
- */
+
+import Lineage2CalculatorGUI.API.Errors.TextErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Provides centralized configuration for accessing the backend REST API.
+ *
+ * <p>
+ * This class defines the base endpoint and initializes a shared {@link RestTemplate}
+ * instance used by API-related classes to perform HTTP operations.
+ * </p>
+ */
 public class ApiConfiguration {
 
     /**
@@ -18,13 +20,18 @@ public class ApiConfiguration {
     protected static final String BASE_URL = "http://localhost:8080/api";
 
     /**
-     * Shared {@code RestTemplate} instance used by all API classes to communicate with the backend REST API.
+     * Reusable HTTP client configured with a custom error handler.
      *
      * <p>
-     * The {@code RestTemplate} is a synchronous HTTP client provided by the Spring Framework.
-     * It supports standard HTTP methods such as GET, POST, PUT, and DELETE,
-     * and simplifies the process of sending requests and processing responses.
+     * This {@code RestTemplate} handles API communication and applies a plain-text
+     * error parser via {@link TextErrorHandler} for consistent error reporting.
      * </p>
      */
-    protected static final RestTemplate restTemplate = new RestTemplate();
+    protected static final RestTemplate restTemplate;
+
+    // Static initializer block that configures the shared RestTemplate instance.
+    static {
+        restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new TextErrorHandler());
+    }
 }

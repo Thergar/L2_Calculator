@@ -1,33 +1,36 @@
 package Lineage2CalculatorGUI.Scenes.CalculatorScene.Components;
 
 import Lineage2CalculatorGUI.API.TownApi;
-import Lineage2CalculatorGUI.Utils.CitySuggestion;
-import Lineage2CalculatorGUI.Utils.Validations.EmptyFieldChecker;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
+import Lineage2CalculatorGUI.Utils.Validations.FieldValidation;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.util.List;
 
+
 /**
- * The {@code CitySelector} class provides a UI component for selecting a town from a dropdown list.
+ * Represents a UI component that allows users to select or enter a town name.
  *
  * <p>
- * It displays a label and a combo box filled with town names fetched from {@link TownApi}.
+ * The component consists of a label, a text field with auto-completion, and a validation message.
+ * Town names are fetched from the backend via {@link TownApi}, and suggestions are provided as the user types.
+ * Validation ensures the entered town is part of the available list.
  * </p>
  */
 public class CitySelector {
 
     private final VBox container;
-    private final ComboBox<String> cityComboBox;
+    private final TextField cityFieldText;
 
-    private final EmptyFieldChecker emptyFieldChecker;
+    private final BooleanProperty valid;
 
-    private final CitySuggestion citySuggestion;
+    private final Label validationMessage;
+
     /**
      * Constructs a city selector with a given label and fills the combo box with town names.
      *
@@ -40,30 +43,27 @@ public class CitySelector {
         Label cityLabel = new Label(label);
         cityLabel.setFont(new Font(15));
 
-        Label validationMessage = new Label();
-        validationMessage.setVisible(false);
+        this.validationMessage = new Label();
+        this.validationMessage.setVisible(false);
 
-        this.emptyFieldChecker = new EmptyFieldChecker();
-        this.citySuggestion = new CitySuggestion();
+        this.cityFieldText = new TextField();
+        this.cityFieldText.setMaxWidth(150);
+        this.cityFieldText.setPromptText("Select town");
 
-        this.cityComboBox = new ComboBox<>();
-        this.cityComboBox.setPrefWidth(150);
-        this.cityComboBox.setPromptText("Select town");
-        this.cityComboBox.getItems().addAll(validTowns);
-        this.cityComboBox.setEditable(true);
+        AutoCompletionBinding<String> autoSuggestionBinding = TextFields.bindAutoCompletion(cityFieldText, validTowns);
+        autoSuggestionBinding.setVisibleRowCount(5);
 
-        citySuggestion.autosuggestion(this.cityComboBox, validTowns);
+        this.valid = FieldValidation.cityValidation(cityFieldText, validationMessage, validTowns);
 
-        emptyFieldChecker.cityValidation(cityComboBox, validationMessage, validTowns);
-
-        this.container = new VBox(10, cityLabel, cityComboBox, validationMessage);
+        this.container = new VBox(10, cityLabel, cityFieldText, validationMessage);
     }
 
     /**
-     * Returns the combo box used for town selection.
+     * Returns the text field used for entering or selecting a town name.
+     *
      */
-    public ComboBox<String> getCityComboBox() {
-        return cityComboBox;
+    public TextField getTextField() {
+        return cityFieldText;
     }
 
     /**
@@ -73,4 +73,18 @@ public class CitySelector {
     public VBox getContainer() {
         return container;
     }
+
+    /**
+     * Indicates whether the currently selected town is valid.
+     *
+     */
+    public BooleanProperty isValid() {return valid;
+    }
+
+    /**
+     * Returns the label used to display validation error messages.
+     *
+     */
+    public Label getValidationMessage() {
+        return validationMessage;}
 }

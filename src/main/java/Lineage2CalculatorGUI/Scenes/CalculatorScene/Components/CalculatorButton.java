@@ -4,15 +4,19 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 
 /**
- * Class creates a styled calculator button.
+ * Represents a styled calculator button used in the calculator UI.
+ *
+ * <p>
+ * This class encapsulates a JavaFX {@link Button} with configurable text and font size,
+ * making it reusable across calculator-related views.
+ * </p>
  */
 public class CalculatorButton {
 
     private final Button calculatorButton;
 
-
     /**
-     * Creates a button with the given name and font size.
+     * Constructs a button with the given name and font size.
      *
      * @param buttonName text displayed on the button
      * @param buttonFont font size of the button text
@@ -24,7 +28,9 @@ public class CalculatorButton {
     }
 
     /**
-     * Returns the calculator button.
+     * Returns the underlying JavaFX button component.
+     *
+     * @return the configured {@link Button} instance
      */
     public Button getCalculatorButton() {
         return calculatorButton;

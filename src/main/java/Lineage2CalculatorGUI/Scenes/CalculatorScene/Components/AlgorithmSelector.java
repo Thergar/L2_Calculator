@@ -1,6 +1,8 @@
 package Lineage2CalculatorGUI.Scenes.CalculatorScene.Components;
 
 import Lineage2CalculatorGUI.API.AlgorithmApi;
+import Lineage2CalculatorGUI.Utils.Validations.FieldValidation;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -12,22 +14,30 @@ import javafx.scene.text.Font;
  * a pathfinding algorithm.
  *
  * <p>
- * It creates two radio buttons: one for selecting the cheapest path (Dijkstra algorithm)
- * and another for the fastest path (BFS algorithm).
- * Buttons are grouped using a {@link ToggleGroup} to ensure only one option
- * is selected at a time.
+ * This component provides two radio buttons grouped under a single toggle:
+ * one for the Dijkstra algorithm ("Cheapest path") and another for the BFS algorithm ("Fastest path").
+ * The selection is validated and a message is shown if no option is selected.
  * </p>
  */
 public class AlgorithmSelector {
 
     private final VBox container;
     private final ToggleGroup algorithmGroup;
+    private final Label validationMessage;
+    private final BooleanProperty valid;
 
+    /**
+     * Initializes the algorithm selector UI component, including radio buttons,
+     * labels, and validation message display.
+     */
     public AlgorithmSelector() {
         this.algorithmGroup = new ToggleGroup();
 
         Label algorithmLabel = new Label("Select path type:");
         algorithmLabel.setFont(new Font(15));
+
+        this.validationMessage = new Label();
+        this.validationMessage.setVisible(false);
 
         RadioButton dijkstra = createAlgorithmButton("Cheapest path", 15);
         dijkstra.setUserData(AlgorithmApi.fetchDijkstraAlgorithm());
@@ -37,7 +47,9 @@ public class AlgorithmSelector {
         bfs.setUserData(AlgorithmApi.fetchBFSAlgorithm());
         bfs.setToggleGroup(algorithmGroup);
 
-        this.container = new VBox(10, algorithmLabel, dijkstra, bfs);
+        this.valid = FieldValidation.algorithmValidation(algorithmGroup, validationMessage);
+
+        this.container = new VBox(10, algorithmLabel, dijkstra, bfs, validationMessage);
     }
 
     /**
@@ -67,5 +79,13 @@ public class AlgorithmSelector {
      */
     public VBox getContainer() {
         return container;
+    }
+
+    public BooleanProperty isValid() {
+        return valid;
+    }
+
+    public Label getValidationMessage() {
+        return validationMessage;
     }
 }
