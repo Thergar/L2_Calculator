@@ -1,6 +1,7 @@
 package Lineage2Calculator.Algorithms;
 
 import Lineage2Calculator.Errors.ErrorHandling;
+import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -8,28 +9,30 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The {@code PathReconstruct} class provides helper methods to reconstruct a path
- * from a given map of previous towns.
+ * Utility component responsible for reconstructing a path between towns based on traversal history.
+ *
+ * <p>
+ *     This class uses a map of "previous town" references to rebuild the full path from a destination
+ *     town back to the starting point. It is typically used by pathfinding algorithms
+ *     such as BFS or Dijkstra after the graph traversal is complete.
+ * </p>
  */
 @Component
 public class PathReconstruct {
 
     private final ErrorHandling errorHandling;
 
-    /**
-     * Constructor for dependency injection.
-     *
-     * @param errorHandling the error handling service.
-     */
     public PathReconstruct(ErrorHandling errorHandling) {
         this.errorHandling = errorHandling;
     }
 
     /**
-     * Reconstructs a path based on the provided map of previous towns.
+     * Reconstructs a complete path from the start town to the destination town based on the visited nodes map.
+     *
      * <p>
-     * The map contains information about which town was visited before reaching another town,
-     * allowing reconstruction of the path by tracing backwards from the destination.
+     *     The map contains information about which town was visited before reaching another town,
+     *     allowing reconstruction of the path by tracing backwards from the destination. If no path exists (the destination is not reachable),
+     *     the method delegates error handling to {@link ErrorHandling#pathNotFoundError(Map, String, String)}.
      * </p>
      *
      * @param previousTown a map where key is a town name, and value is the preceding town.
@@ -42,7 +45,7 @@ public class PathReconstruct {
         LinkedList<String> path = new LinkedList<>();
 
         // Validate the input data using the error handling service
-        errorHandling.pathNotFound(previousTown, startTown, endTown);
+        errorHandling.pathNotFoundError(previousTown, startTown, endTown);
 
         String step = endTown;
         while (step != null) {

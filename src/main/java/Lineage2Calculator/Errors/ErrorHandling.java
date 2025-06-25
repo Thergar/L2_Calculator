@@ -1,90 +1,70 @@
 package Lineage2Calculator.Errors;
 
-import Lineage2Calculator.Errors.CustomErrors.NoPathFoundException;
+import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import Lineage2Calculator.Graph.Graph;
 import Lineage2Calculator.Services.Algorithm.AlgorithmNameService;
 import Lineage2Calculator.Services.TownService;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * The {@code ErrorHandling} class provides methods for validating
- * towns and handling errors related to teleportation path. It ensures that the provided towns are valid and throws
- * defined exceptions when certain conditions are not met.
+ * Centralized helper component for throwing consistent exceptions during input validation
+ * and pathfinding operations.
  *
  * <p>
- *     This class is intended to be used together with the {@link Graph} class
- *     to validate inputs and manages errors.
+ *     This class encapsulates reusable error scenarios such as invalid town names, unknown algorithm types,
+ *     duplicate start and end towns, or unreachable destinations. It is typically invoked from validation
+ *     or algorithmic logic to ensure meaningful error reporting.
  * </p>
+ *
  */
 @Component
 public class ErrorHandling {
 
-
-    private final TownService townService;
-    private  final AlgorithmNameService algorithmNameService;
-
     /**
-     * Constructs an instance of the {@code ErrorHandling} class.
-     * 
-     * @param townService the service responsible for managing towns and their validations.
-     * @param algorithmNameService the service responsible for retrieving and validating algorithm names.
+     * Throws an exception indicating that the specified town is not present in the graph.
+     *
+     * @param town the name of the invalid town
+     * @throws IllegalArgumentException always thrown to indicate the town does not exist
      */
-    public ErrorHandling(TownService townService, AlgorithmNameService algorithmNameService) {
-        this.townService = townService;
-        this.algorithmNameService = algorithmNameService;
+    public void invalidTownNamesError(String town) {
+        throw new IllegalArgumentException("The town \"" + town + "\" does not exist in the graph.");
     }
 
     /**
-     * Validates if the provided town name exists in the list of towns.
+     * Throws an exception when the selected algorithm name is unsupported.
+     *
+     * @param algorithmType the invalid algorithm type
+     * @throws IllegalArgumentException always thrown to indicate the algorithm type is unknown
+     */
+    public void invalidAlgorithmTypeError(String algorithmType) {
+        throw new IllegalArgumentException("The algorithm type \"" + algorithmType + "\" does not exist.");
+    }
+
+    /**
+     * Throws an exception when the starting and destination towns are identical.
+     *
+     * @throws IllegalArgumentException always thrown when towns are the same
+     */
+    public void sameTownsError() {
+        throw new IllegalArgumentException("Starting town and destination town cannot be the same.");
+    }
+
+    /**
+     * Throws an exception if the destination town is unreachable from the starting town.
      *
      * <p>
-     *     Throws an exception and message if the town name is invalid.
+     *     This method checks whether {@code endTown} is present in the {@code previousTown} map,
+     *     which typically represents the result of a BFS or Dijkstra traversal.
      * </p>
-     * @param town the name of town to validate.
-     * @throws IllegalArgumentException if the town name does not exist in the validTown list.
-     */
-    public void validateTownName(String town) {
-        if (!townService.getAllTownNames().contains(town)) {
-            throw new IllegalArgumentException("The town \"" + town + "\" does not exist in the graph.");
-        }
-    }
-
-    /**
-     * Validates if the provided algorithm type exists in the set of supported algorithm types.
      *
-     * @param algorithmType the name of the algorithm type to validate.
-     * @throws IllegalArgumentException if the provided algorithm type does not exist in the set of valid algorithm names.
+     * @param previousTown the map containing traversal history
+     * @param startTown the name of the starting town
+     * @param endTown the name of the destination town
+     * @throws NoPathFoundException if no valid path leads to the destination
      */
-    public void validateAlgorithmType(String algorithmType) {
-        if (!algorithmNameService.getAlgorithmNames().contains(algorithmType)) {
-            throw new IllegalArgumentException("The algorithm type \"" + algorithmType + "\" does not exist.");
-        }
-    }
-
-    /**
-     * Validates the starting town and destination.
-     * Ensure that both towns are not the same.
-     *
-     * @param startTown the name of starting town.
-     * @param endTown the name of destination town.
-     */
-    public void validateDistinctTowns(String startTown, String endTown) {
-        if (startTown.equals(endTown)) {
-            throw new IllegalArgumentException("Starting town and destination town cannot be the same.");
-        }
-    }
-
-    /**
-    * Throws exception when no path exist from starting town to destination town.
-    *
-    *  @param startTown the name of starting town.
-    *  @param endTown the name of destination town.
-    */
-    public void pathNotFound(Map<String, String> previousTown, String startTown, String endTown) {
+    public void pathNotFoundError(Map<String, String> previousTown, String startTown, String endTown) {
         if (!previousTown.containsKey(endTown)) {
             throw new NoPathFoundException("No path found from \"" + startTown + "\" to \"" + endTown + "\".");
         }

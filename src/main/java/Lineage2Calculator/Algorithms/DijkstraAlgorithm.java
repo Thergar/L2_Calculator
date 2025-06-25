@@ -2,7 +2,7 @@ package Lineage2Calculator.Algorithms;
 
 import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.DTO.DTOPathResultFactory;
-import Lineage2Calculator.Errors.ErrorHandling;
+import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
 
@@ -11,42 +11,46 @@ import java.util.*;
 /**
  * The {@code DijkstraAlgorithm} class provides a method to find the cheapest teleport path
  * between towns using Dijkstra's algorithm.
+ *
  * <p>
- *     The algorithm calculates the minimum cost between the starting town and the destination town
- *     while considering all intermediate towns. It leverages a priority queue to ensure
- *     that towns with the lowest teleportation cost are prioritized.
+ * This algorithm finds the path with the lowest total teleportation cost from a starting town
+ * to a destination town within a {@link Graph}, considering all possible intermediate towns.
+ * A priority queue is used to explore towns in order of increasing cost.
  * </p>
+ *
  */
 @Component
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     private final PathReconstruct pathReconstruct;
-    private final ErrorHandling errorHandling;
 
-    public DijkstraAlgorithm(PathReconstruct pathReconstruct, ErrorHandling errorHandling) {
+    /**
+     * Constructs the BFS pathfinding algorithm with a path reconstruction helper.
+     *
+     * @param pathReconstruct utility used to reconstruct the full path from the traversal history
+     */
+    public DijkstraAlgorithm(PathReconstruct pathReconstruct) {
         this.pathReconstruct = pathReconstruct;
-        this.errorHandling = errorHandling;
     }
 
     /**
-    * Finds the cheapest path between the starting town and destination town using Dijkstra's algorithm.
-    * <p>
-    *     This method takes a graph object and two town names (start and end) as parameters.
-    *     It validates the existence of the towns in the graph, calculates the cheapest path
-    *     and reconstructs the path.
-    *</p>
-    *
-    * @param graph the {@link Graph} object representing the teleportation network.
-    * @param startTown the name of starting town.
-    * @param endTown the name of destination town.
-    * @return a {@link DTOPathResult} object containing the cheapest path and the total cost of teleportation.
-    * @throws IllegalArgumentException if the starting or destination town does not exist in graph or if they are the same.
-    * @throws RuntimeException if no path can be found between the towns.
-    */
+     * Finds the cheapest path between the starting town and destination town using Dijkstra's algorithm.
+     *
+     * <p>
+     *     The algorithm iteratively explores neighboring towns, updating the minimum teleportation
+     *     cost as it finds cheaper routes. After the destination is reached, the shortest-cost path
+     *     is reconstructed.
+     * </p>
+     *
+     * <p>
+     *     This method may throw an error if no path exists (thrown by {@link NoPathFoundException}).
+     * </p>
+     * @param graph the {@link Graph} object representing the teleportation network.
+     * @param startTown the name of starting town.
+     * @param endTown the name of destination town.
+     * @return a {@link DTOPathResult} object containing the cheapest path and the total cost of teleportation.
+     */
     public DTOPathResult findCheapestPath(Graph graph, String startTown, String endTown) {
-
-        // Validate existence of startTown and endTown exist in the graph.
-        errorHandling.validateDistinctTowns(startTown, endTown);
 
         // The map that stores the lowest value (price) of reaching the city.
         Map<String, Integer> minCost = new HashMap<>();
@@ -98,6 +102,14 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         return DTOPathResultFactory.forDijkstra(path, totalCost);
     }
 
+    /**
+     * Standard interface method to return a BFS-based teleportation path.
+     *
+     * @param graph     the teleportation graph
+     * @param startTown the starting town
+     * @param endTown   the destination town
+     * @return the calculated path and related metadata
+     */
     @Override
     public DTOPathResult algorithmPath(Graph graph, String startTown, String endTown){
         return findCheapestPath(graph, startTown, endTown);
