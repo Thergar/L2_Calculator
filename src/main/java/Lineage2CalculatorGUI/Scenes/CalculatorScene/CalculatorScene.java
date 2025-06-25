@@ -67,16 +67,9 @@ public class CalculatorScene {
                         .or(destinationCitySelector.isValid().not())
                         .or(algorithmSelector.isValid().not()));
 
-
-        try {
-            calculateButton.getCalculatorButton().setOnAction(
+        calculateButton.getCalculatorButton().setOnAction(
                     CalculatePathAction
                             .calculateAction(startCitySelector, destinationCitySelector, algorithmSelector, resultBox));
-        } catch (ApiException exception) {
-            if (exception.getStatusCode() == 404) {
-                resultBox.getResultText().setText(exception.getMessage());
-            }
-        }
 
         // Create calculator scene.
         calculatorScene = new Scene(gridPane);
