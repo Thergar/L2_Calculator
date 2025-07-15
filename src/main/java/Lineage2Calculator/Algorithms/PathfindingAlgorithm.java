@@ -11,4 +11,6 @@ public interface PathfindingAlgorithm {
 
      DTOPathResult algorithmPath(Graph graph, String startTown, String endTown);
 
+     String getAlgorithmName();
+
 }

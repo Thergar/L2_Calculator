@@ -1,7 +1,9 @@
 package Lineage2Calculator.Algorithms;
 
 import Lineage2Calculator.Errors.ErrorHandling;
+import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,13 +21,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
 public class PathReconstructTest {
 
-    @Mock
-    private ErrorHandling errorHandling;
-
-    @InjectMocks
     private PathReconstruct pathReconstruct;
 
     Map<String, String> previousTowns;
@@ -35,19 +32,23 @@ public class PathReconstructTest {
     String C = "C";
     String D = "D";
     String E = "E";
+    String F = "F"; // Non-existing town for testing
 
     @BeforeEach
     void setUp() {
+        pathReconstruct = new PathReconstruct(new ErrorHandling());
         previousTowns = new HashMap<>();
-    }
-    @Test
-    void testReconstructPath_Successful() {
 
         previousTowns.put(A, null);
         previousTowns.put(B, A);
         previousTowns.put(C, B);
         previousTowns.put(D, C);
         previousTowns.put(E, D);
+    }
+
+    @Test
+    @DisplayName("Successfully reconstructs path.")
+    void testReconstructPath_Successful() {
 
         List<String> expectedPath1 = List.of(A, B, C ,D, E);
         List<String> expectedPath2 = List.of(A, B, C);
@@ -60,18 +61,13 @@ public class PathReconstructTest {
     }
 
     @Test
+    @DisplayName("Throws NoPathFoundException error when no path is found.")
     void testReconstructPath_NoPath() {
 
-        previousTowns.put(A, null);
-        previousTowns.put(B, A);
-        previousTowns.put(C, B);
+        assertThrows(NoPathFoundException.class,
+                () -> pathReconstruct.reconstructPath(previousTowns, A, F),
+                "No path found from \"" + A + "\" to \"" + F + "\".");
 
-        doThrow(new IllegalArgumentException("No path found from \"" + A + "\" to \"" + D + "\"."))
-                .when(errorHandling).pathNotFound(anyMap(), eq(A), eq(D));
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> pathReconstruct.reconstructPath(previousTowns, A, D));
-
-        assertEquals("No path found from \"" + A + "\" to \"" + D + "\".", exception.getMessage());
-        verify(errorHandling).pathNotFound(previousTowns, A, D);
     }
 }

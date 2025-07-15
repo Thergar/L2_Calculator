@@ -29,11 +29,9 @@ public class DotenvLoaderPostProcessor implements EnvironmentPostProcessor {
      */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-
         Dotenv dotenv = Dotenv.configure().load();
 
         dotenv.entries().forEach(entry -> {environment.getSystemProperties().put(entry.getKey(), entry.getValue());
         });
-
     }
 }

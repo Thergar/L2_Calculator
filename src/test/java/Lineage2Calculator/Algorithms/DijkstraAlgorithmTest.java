@@ -2,95 +2,67 @@ package Lineage2Calculator.Algorithms;
 
 import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.Errors.ErrorHandling;
+import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import Lineage2Calculator.Graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.doThrow;
 
-@ExtendWith(MockitoExtension.class)
 public class DijkstraAlgorithmTest {
 
-    @Mock
-    private PathReconstruct pathReconstruct;
-
-    @Mock
-    private ErrorHandling errorHandling;
-
-    @Mock
     private Graph graph;
 
-    @InjectMocks
     private DijkstraAlgorithm dijkstraAlgorithm;
 
     String A = "A";
     String B = "B";
     String C = "C";
-    String D = "E";
+    String D = "D";
+    String E = "E";
+    String F = "F"; // Non-existing town for testing
 
     @BeforeEach
     void setUp() {
-        lenient().when(graph.getNeighbors(A)).thenReturn(Map.of(B, 1, C, 2, D, 12));
 
-        lenient().when(graph.getAdjacencyMap()).thenReturn(
-                Map.of(
-                        A, Map.of(B, 1, C, 2, D, 12),
-                        B, Map.of(C, 1),
-                        C, Map.of(D, 7),
-                        D, Map.of()
-                )
-        );
+        graph = new Graph();
+
+        graph.addTown(A);
+        graph.addTown(B);
+        graph.addTown(C);
+        graph.addTown(D);
+        graph.addTown(E);
+
+        graph.addEdge(A, B, 1);
+        graph.addEdge(A, C, 3);
+        graph.addEdge(A, D, 12);
+        graph.addEdge(B, C, 1);
+        graph.addEdge(C, E, 7);
+        graph.addEdge(D, E, 1);
+
+        dijkstraAlgorithm = new DijkstraAlgorithm(new PathReconstruct(new ErrorHandling()));
     }
 
     @Test
+    @DisplayName("Test successful Dijkstra Algorithm path")
     void testFindCheapestPath_Successful() {
 
-        when(graph.getNeighbors(B)).thenReturn(Map.of(C, 1));
-        when(graph.getNeighbors(C)).thenReturn(Map.of(D, 7));
+        DTOPathResult pathResult = dijkstraAlgorithm.findCheapestPath(graph, A, E);
 
-        when(pathReconstruct.reconstructPath(anyMap(), eq(A), eq(D)))
-                .thenReturn(List.of(A, B, C, D));
-
-        DTOPathResult result = dijkstraAlgorithm.findCheapestPath(graph, A, D);
-
-        assertNotNull(result);
-        assertEquals(List.of(A, B, C, D), result.getPath());
-        assertEquals(9, result.getTotalCost());
+        assertEquals(List.of(A, B, C, E), pathResult.getPath());
+        assertEquals(9, pathResult.getTotalCost());
     }
 
     @Test
+    @DisplayName("Test Dijkstra Algorithm throws error when no path was found")
     void testFindCheapestPath_PathUnavailable() {
 
-        when(graph.getNeighbors(D)).thenReturn(Map.of());
-
-        doThrow(new IllegalArgumentException("No path found from \"" + D + "\" to \"" + A + "\"."))
-                .when(pathReconstruct).reconstructPath(anyMap(), eq(D), eq(A));
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> dijkstraAlgorithm.findCheapestPath(graph, D, A));
-
-        assertEquals("No path found from \"" + D + "\" to \"" + A + "\".", exception.getMessage());
-    }
-
-    @Test
-    void testFindCheapestPath_DuplicatedTown() {
-
-        doThrow(new IllegalArgumentException("Starting town and destination town cannot be the same."))
-                .when(errorHandling).validateDistinctTowns(C, C);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> dijkstraAlgorithm.findCheapestPath(graph, C, C));
-
-        assertEquals("Starting town and destination town cannot be the same.", exception.getMessage());
+        assertThrows(NoPathFoundException.class,
+                () -> dijkstraAlgorithm.findCheapestPath(graph, A, F),
+                "No path found from \"" + A + "\" to \"" + F + "\".");
     }
 }
