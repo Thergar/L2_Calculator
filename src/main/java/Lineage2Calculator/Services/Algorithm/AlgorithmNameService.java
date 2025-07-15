@@ -26,8 +26,8 @@ public class AlgorithmNameService {
     public AlgorithmNameService(List<PathfindingAlgorithm> algorithms) {
         this.algorithmMap = algorithms.stream()
                 .collect(Collectors
-                        .toMap(algorithm -> algorithm.getClass()
-                                .getSimpleName(), algorithm -> algorithm));
+                        .toMap(PathfindingAlgorithm::getAlgorithmName,
+                                algorithm -> algorithm));
     }
 
     /**

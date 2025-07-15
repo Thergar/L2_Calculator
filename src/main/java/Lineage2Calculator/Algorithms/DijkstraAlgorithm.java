@@ -114,4 +114,9 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     public DTOPathResult algorithmPath(Graph graph, String startTown, String endTown){
         return findCheapestPath(graph, startTown, endTown);
     }
+
+    @Override
+    public String getAlgorithmName() {
+        return "Dijkstra";
+    }
 }
