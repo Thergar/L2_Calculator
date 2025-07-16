@@ -13,13 +13,15 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(800);
+        primaryStage.setMinWidth(900);
+        primaryStage.setMinHeight(700);
+        primaryStage.setMaxWidth(1000);
+        primaryStage.setMaxHeight(800);
 
         CalculatorScene calculatorScene = new CalculatorScene(primaryStage);
 
         primaryStage.setTitle("L2 Calculator");
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/lineage2.png")));
+        primaryStage.getIcons().add(new Image(getClass().getResource("/images/lineage2.png").toExternalForm()));
         primaryStage.setScene(calculatorScene.getCalculatorScene());
 
         primaryStage.show();

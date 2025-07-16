@@ -6,6 +6,8 @@ import Lineage2CalculatorGUI.Scenes.CalculatorScene.Components.*;
 import Lineage2CalculatorGUI.Utils.CalculatePathAction;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -34,7 +36,7 @@ public class CalculatorScene {
      * @param stage the primary application stage used to display this scene
      */
     public CalculatorScene(Stage stage) {
-
+        // UI components initialization.
         CitySelector startCitySelector = new CitySelector("Select start city:");
         CitySelector destinationCitySelector = new CitySelector("Select destination city:");
 
@@ -44,7 +46,7 @@ public class CalculatorScene {
 
         ResultBox resultBox = new ResultBox();
 
-
+        // Layout configuration.
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(20));
         gridPane.setHgap(50);
@@ -62,6 +64,7 @@ public class CalculatorScene {
         gridPane.add(calculateButton.getCalculatorButton(), 1, 1);
         gridPane.add(resultBox.getResultText(), 0, 2, 2, 1);
 
+        // Button action and validation.
         calculateButton.getCalculatorButton().disableProperty().bind(
                 startCitySelector.isValid().not()
                         .or(destinationCitySelector.isValid().not())
@@ -71,8 +74,28 @@ public class CalculatorScene {
                     CalculatePathAction
                             .calculateAction(startCitySelector, destinationCitySelector, algorithmSelector, resultBox));
 
-        // Create calculator scene.
-        calculatorScene = new Scene(gridPane);
+        StackPane root = new StackPane();
+
+        // Background image setup.
+        Image backgroundImage = new Image(getClass().getResource("/images/L2_map_C4.jpg").toExternalForm());
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setPreserveRatio(false);
+        backgroundImageView.setSmooth(true);
+        StackPane.setAlignment(backgroundImageView, javafx.geometry.Pos.CENTER);
+
+        root.getChildren().addAll(backgroundImageView, gridPane);
+
+        root.setMinWidth(800);
+        root.setMinHeight(700);
+        root.setPrefWidth(1000);
+        root.setPrefHeight(800);
+
+        // Calculator scene.
+        calculatorScene = new Scene(root, 1000, 800);
+
+        // Bind background to scene size
+        backgroundImageView.fitWidthProperty().bind(calculatorScene.widthProperty());
+        backgroundImageView.fitHeightProperty().bind(calculatorScene.heightProperty());
     }
 
     /**
