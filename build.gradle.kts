@@ -28,6 +28,9 @@ dependencies {
     implementation("org.openjfx:javafx-fxml:21.0.6")
     implementation("org.openjfx:javafx-base:21.0.6")
 
+    // ControlsFX library for additional UI controls.
+    implementation("org.controlsfx:controlsfx:11.2.2")
+
 
     // Starter for Spring Boot.
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.4.2")
@@ -67,7 +70,8 @@ tasks.withType<JavaExec> {
     jvmArgs = listOf(
         "-Xmx1024m", "-Xms512m",
         "--module-path", "F:/JavaFX/lib",
-        "--add-modules", "javafx.controls,javafx.fxml,javafx.graphics"
+        "--add-modules", "javafx.controls,javafx.fxml,javafx.graphics",
+        "--add-exports=javafx.base/com.sun.javafx.event=ALL-UNNAMED"
     )
 }
 
