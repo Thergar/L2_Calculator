@@ -3,6 +3,7 @@ package Lineage2Calculator.Services;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,17 +35,18 @@ public class GraphBuilderService {
         this.townService = townService;
     }
 
-/**
- * Builds a {@link Graph} containing nodes and weighted edges.
- * <p>
- *     This method retrieves the list of all towns and their associated teleportation data
- *     from the database using the {@link TownService}.
- *     For each town, it adds the town as graph node and creates edges between nodes based
- *     on teleport connections.
- * </p>
- *
- * @return a fully constructed {@link Graph} object containing all towns and teleport routes.
- */
+    /**
+     * Builds a {@link Graph} containing nodes and weighted edges.
+     *  <p>
+     *     This method retrieves the list of all towns and their associated teleportation data
+     *     from the database using the {@link TownService}.
+     *     For each town, it adds the town as graph node and creates edges between nodes based
+     *     on teleport connections.
+     * </p>
+     *
+     * @return a fully constructed {@link Graph} object containing all towns and teleport routes.
+     */
+    @Deprecated
     public Graph buildGraph() {
         Graph graph = new Graph();
 
@@ -63,5 +65,59 @@ public class GraphBuilderService {
         }
 
         return graph;
+    }
+
+    /**
+     * Builds a {@link Graph} starting from a specific town and including only towns
+     * that are directly or indirectly reachable via teleport connections.
+     * <p>
+     *     This method initiates recursive graph construction, avoiding the need to load
+     *     the entire teleportation network. It is particularly useful for calculating paths
+     *     between specific locations without incurring overhead from unused data.
+     * </p>
+     *
+     * @param town the starting town for building the partial graph.
+     * @return a {@link Graph} containing only the subset of towns reachable from the given starting town.
+     */
+    public Graph buildGraphFrom(String town) {
+        Graph graph = new Graph();
+
+        Set<String> visited = new HashSet<>();
+
+        buildGraphRecursive(graph, town, visited);
+
+        return graph;
+    }
+
+    /**
+     * Recursively traverses teleport connections starting from the given town and
+     * adds nodes and edges to the provided {@link Graph} instance.
+     * <p>
+     *     This method ensures that each town is only visited once by maintaining
+     *     a set of visited towns. It builds a connected component of the teleportation
+     *     graph rooted at the specified starting point.
+     * </p>
+     *
+     * @param graph   the {@link Graph} object being constructed.
+     * @param town    the current town to process and expand.
+     * @param visited a set of already visited town names to prevent cycles and redundant work.
+     */
+    private void buildGraphRecursive(Graph graph, String town, Set<String> visited) {
+        if (visited.contains(town)) {
+            return;
+        }
+
+        visited.add(town);
+        graph.addTown(town);
+
+        Map<String, Integer> teleportData = townService.getTeleportData(town);
+        for (Map.Entry<String, Integer> entry : teleportData.entrySet()) {
+
+            String connectedTown = entry.getKey();
+            int cost = entry.getValue();
+
+            graph.addEdge(town, connectedTown, cost);
+            buildGraphRecursive(graph, connectedTown, visited);
+        }
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculateAlgorithmService {
 
-    private final Graph graph;
+    private final GraphBuilderService graphBuilder;
     private final AlgorithmNameService algorithmNameService;
 
     /**
@@ -18,7 +18,7 @@ public class CalculateAlgorithmService {
      * @param graphBuilder the service responsible for building the graph representation.
      */
     public CalculateAlgorithmService(GraphBuilderService graphBuilder, AlgorithmNameService algorithmNameService) {
-        this.graph = graphBuilder.buildGraph();
+        this.graphBuilder = graphBuilder;
         this.algorithmNameService = algorithmNameService;
     }
 
@@ -28,6 +28,7 @@ public class CalculateAlgorithmService {
      * @return {@link DTOPathResult} containing the pathfinding result.
      */
     public DTOPathResult calculatePath(String startTown, String endTown, String algorithmName) {
+        Graph graph = graphBuilder.buildGraphFrom(startTown);
         return algorithmNameService.getAlgorithm(algorithmName).algorithmPath(graph, startTown, endTown);
     }
 }

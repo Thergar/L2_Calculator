@@ -1,7 +1,6 @@
 package Lineage2Calculator.Algorithms;
 
 import Lineage2Calculator.Errors.ErrorHandling;
-import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;

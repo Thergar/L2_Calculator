@@ -2,8 +2,8 @@ package Lineage2Calculator.Algorithms;
 
 import Lineage2Calculator.DTO.BFSPathResult;
 import Lineage2Calculator.DTO.DTOPathResult;
+import Lineage2Calculator.Errors.CustomErrors.NoPathFoundException;
 import Lineage2Calculator.Errors.ErrorHandling;
-import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import Lineage2Calculator.Graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BFSAlgorithmTest {
 

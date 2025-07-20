@@ -2,7 +2,6 @@ package Lineage2Calculator.Algorithms;
 
 import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.DTO.DTOPathResultFactory;
-import Lineage2Calculator.Errors.Helper.NoPathFoundException;
 import Lineage2Calculator.Graph.Graph;
 import org.springframework.stereotype.Component;
 

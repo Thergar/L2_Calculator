@@ -1,9 +1,6 @@
 package Lineage2Calculator.Errors;
 
-import Lineage2Calculator.Errors.Helper.NoPathFoundException;
-import Lineage2Calculator.Graph.Graph;
-import Lineage2Calculator.Services.Algorithm.AlgorithmNameService;
-import Lineage2Calculator.Services.TownService;
+import Lineage2Calculator.Errors.CustomErrors.NoPathFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

@@ -21,7 +21,7 @@ public class MainFX extends Application {
         CalculatorScene calculatorScene = new CalculatorScene(primaryStage);
 
         primaryStage.setTitle("L2 Calculator");
-        primaryStage.getIcons().add(new Image(getClass().getResource("/images/lineage2.png").toExternalForm()));
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/Lineage2.png")));
         primaryStage.setScene(calculatorScene.getCalculatorScene());
 
         primaryStage.show();

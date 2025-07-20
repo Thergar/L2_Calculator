@@ -1,6 +1,5 @@
 package Lineage2CalculatorGUI.Scenes.CalculatorScene;
 
-import Lineage2CalculatorGUI.API.Errors.ApiException;
 import Lineage2CalculatorGUI.API.PathfindingApi;
 import Lineage2CalculatorGUI.Scenes.CalculatorScene.Components.*;
 import Lineage2CalculatorGUI.Utils.CalculatePathAction;

@@ -43,7 +43,7 @@ public class CalculateAlgorithmServiceTest {
 
     @BeforeEach
     void setUp() {
-        when(graphBuilderService.buildGraph()).thenReturn(graph);
+        when(graphBuilderService.buildGraphFrom(anyString())).thenReturn(graph);
         when(bfsAlgorithmMock.getAlgorithmName()).thenReturn("BFS");
         when(dijkstraAlgorithmMock.getAlgorithmName()).thenReturn("Dijkstra");
 

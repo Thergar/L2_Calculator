@@ -1,5 +1,6 @@
 package Lineage2Calculator.Errors.Helper;
 
+import Lineage2Calculator.Errors.CustomErrors.NoPathFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
