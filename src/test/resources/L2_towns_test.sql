@@ -62,7 +62,8 @@ INSERT INTO public.dion_castle_town_teleports (teleport_id, destination_id, pric
 
 INSERT INTO public.goddard_castle_town_teleports (teleport_id, destination_id, price) VALUES
 (1,	3,	71000),
-(2,	5,	8100);
+(2,	4,	38000),
+(3,	5,	8100);
 
 
 INSERT INTO public.elven_village_teleports (teleport_id, destination_id, price) VALUES

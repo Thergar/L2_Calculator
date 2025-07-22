@@ -2,8 +2,9 @@ package Lineage2Calculator.Integration.Entities;
 
 import Lineage2Calculator.Entities.Town;
 import Lineage2Calculator.Entities.TownRepository.TownRepository;
-import Lineage2Calculator.Integration.BaseConfiguration;
+import Lineage2Calculator.Utils.BaseConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TownTest extends BaseConfiguration {
 
@@ -57,13 +59,13 @@ public class TownTest extends BaseConfiguration {
     @Test
     void fetchTownDataWithTable() {
 
-        List<Object[]> result = townRepository.fetchTownDataWithDynamicTable("heine_teleports");
+        List<Object[]> result = townRepository.fetchTownDataWithDynamicTable("Elven_Village_teleports");
 
         List<String> townNames = result.stream()
                 .map(results -> (String) results[0])
                 .toList();
 
         assertThat(result).isNotEmpty();
-        assertThat(townNames).contains("Town of Oren");
+        assertThat(townNames).contains("Dwarven Village", "Dark Elven Village", "Aden Castle Town", "Elven Village");
     }
 }

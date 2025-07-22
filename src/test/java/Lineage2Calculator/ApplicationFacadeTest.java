@@ -2,6 +2,7 @@ package Lineage2Calculator;
 
 import Lineage2Calculator.DTO.DTOPathResult;
 import Lineage2Calculator.Errors.CustomErrors.NoPathFoundException;
+import Lineage2Calculator.Utils.BaseConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ApplicationFacadeIntegrationTest extends BaseConfiguration {
+public class ApplicationFacadeTest extends BaseConfiguration {
 
     @Autowired
     private ApplicationFacade applicationFacade;
