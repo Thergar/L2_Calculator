@@ -12,7 +12,7 @@ import java.util.Set;
  * REST controller class, responsible for displays algorithm names.
  */
 @RestController
-@RequestMapping("/api/algorithm")
+@RequestMapping("/algorithm")
 @CrossOrigin(origins = "*")
 public class AlgorithmController {
 
@@ -34,11 +34,11 @@ public class AlgorithmController {
 
     @GetMapping("/dijkstra")
     public String getDijkstraAlgorithm() {
-        return "DijkstraAlgorithm";
+        return "Dijkstra";
     }
 
     @GetMapping("/bfs")
     public String getBFSAlgorithm() {
-        return "BFSAlgorithm";
+        return "BFS";
     }
 }

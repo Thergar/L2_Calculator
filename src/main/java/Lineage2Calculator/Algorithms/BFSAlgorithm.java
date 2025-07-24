@@ -39,10 +39,6 @@ public class BFSAlgorithm implements PathfindingAlgorithm {
      *     calculates intermediate costs, and reconstructs the path after reaching the destination.
      * </p>
      *
-     * <p>
-     *     This method may throw an error if no path exists (thrown by {@link NoPathFoundException}).
-     * </p>
-     *
      * @param graph     the {@link Graph} object representing the teleportation network.
      * @param startTown the name of starting town.
      * @param endTown   the name of destination town.

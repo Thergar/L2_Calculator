@@ -1,0 +1,501 @@
+{
+	"info": {
+		"_postman_id": "e7d60cae-8587-4853-b375-a2216c2cd7c4",
+		"name": "L2Calculator_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26559320"
+	},
+	"item": [
+		{
+			"name": "Algorithm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains known algorithms\", function () {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.be.an(\"array\");\r",
+							"    pm.expect(data).to.include(\"BFS\");\r",
+							"    pm.expect(data).to.include(\"Dijkstra\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/algorithm/names",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"algorithm",
+						"names"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dijsktra",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains known algorithms\", function () {\r",
+							"    const data = pm.response.text();\r",
+							"    pm.expect(data).to.include(\"Dijkstra\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/algorithm/dijkstra",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"algorithm",
+						"dijkstra"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bfs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains known algorithms\", function () {\r",
+							"    const data = pm.response.text();\r",
+							"    pm.expect(data).to.include(\"BFS\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/algorithm/bfs",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"algorithm",
+						"bfs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "allTowns",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains known towns\", function () {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data).to.include(\"Heine\");\r",
+							"    pm.expect(data).to.include(\"Dion Castle Town\"); \r",
+							"    pm.expect(data).to.include(\"Talking Island Village\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/towns/all",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"towns",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CalculateBfs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a DTO-like object\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"type\");\r",
+							"    pm.expect(jsonData.type).to.be.string(\"bfs\");\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"path\");\r",
+							"    pm.expect(jsonData.path).to.be.an(\"array\");\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"totalCost\");\r",
+							"    pm.expect(jsonData.totalCost).to.be.a(\"number\");\r",
+							"    pm.expect(jsonData.totalCost).to.be.above(0);\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"steps\");\r",
+							"    pm.expect(jsonData.steps).to.be.above(1);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startTown\": \"Dion Castle Town\",\r\n    \"endTown\": \"Dwarven Village\",\r\n    \"algorithmName\": \"BFS\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pathfinding/calculate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pathfinding",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CalculateDijkstra",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is DTO-like object\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseBody).to.be.an(\"object\");\r",
+							"\r",
+							"    pm.expect(responseBody).to.have.property(\"type\");\r",
+							"    pm.expect(responseBody.type).to.be.string(\"dijkstra\");\r",
+							"\r",
+							"    pm.expect(responseBody).to.have.property(\"path\");\r",
+							"    pm.expect(responseBody.path).to.be.an(\"array\");\r",
+							"\r",
+							"    pm.expect(responseBody).to.have.property(\"totalCost\");\r",
+							"    pm.expect(responseBody.totalCost).to.be.a(\"number\");\r",
+							"    pm.expect(responseBody.totalCost).to.be.above(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startTown\": \"Dion Castle Town\",\r\n    \"endTown\": \"Dwarven Village\",\r\n    \"algorithmName\": \"Dijkstra\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pathfinding/calculate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pathfinding",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TownError",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains 'Invalid Town'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include('Invalid Town');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startTown\": \"Invalid Town\",\r\n    \"endTown\": \"Dwarven Village\",\r\n    \"algorithmName\": \"Dijkstra\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pathfinding/calculate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pathfinding",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DuplicateTowns",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains 'cannot be the same'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"cannot be the same\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startTown\": \"Dwarven Village\",\r\n    \"endTown\": \"Dwarven Village\",\r\n    \"algorithmName\": \"Dijkstra\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pathfinding/calculate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pathfinding",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidAlgorithm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains 'Invalid algorithm type'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Invalid\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startTown\": \"Orc Village\",\r\n    \"endTown\": \"Dwarven Village\",\r\n    \"algorithmName\": \"Invalid\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pathfinding/calculate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pathfinding",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NoPath",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"No path found message\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"No path found from\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startTown\": \"Dwarven Village\",\r\n    \"endTown\": \"Elven Village\",\r\n    \"algorithmName\": \"Dijkstra\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pathfinding/calculate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pathfinding",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

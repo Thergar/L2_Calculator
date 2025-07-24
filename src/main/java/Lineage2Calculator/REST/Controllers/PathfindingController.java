@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
  * REST Controller responsible for handling pathfinding requests.
  */
 @RestController
-@RequestMapping("api/pathfinding")
+@RequestMapping("/pathfinding")
 @CrossOrigin(origins = "*")
 public class PathfindingController {
 

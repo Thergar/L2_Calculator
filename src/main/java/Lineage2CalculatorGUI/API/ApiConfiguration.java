@@ -17,7 +17,7 @@ public class ApiConfiguration {
     /**
      * Base URL of the backend API.
      */
-    protected static final String BASE_URL = "http://localhost:8080/api";
+    protected static final String BASE_URL = "http://localhost:8080";
 
     /**
      * Reusable HTTP client configured with a custom error handler.

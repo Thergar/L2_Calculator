@@ -12,7 +12,7 @@ import java.util.Set;
  * REST controller class, handles towns related requests.
  */
 @RestController
-@RequestMapping("/api/towns")
+@RequestMapping("/towns")
 @CrossOrigin(origins = "*")
 public class TownController {
 
