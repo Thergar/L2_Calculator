@@ -11,7 +11,6 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
       - ./L2_towns_dump.sql:/docker-entrypoint-initdb.d/L2_towns_dump.sql
 
   l2_app:
@@ -31,5 +30,3 @@ services:
 
     ports:
       - "8080:8080"
-volumes:
-  postgres_data:
