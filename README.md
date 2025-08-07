@@ -31,13 +31,11 @@ Navigate where you want to keep L2_Calculator, open Git bash and write.
    git clone https://github.com/Thergar/L2_Calculator.git
    ```
    
-3. **Check `.env` file**
+2. **Check `.env` file**
    
-   The .env file is already included in the repository.
-   
-It provides database credentials used by Docker and Spring Boot.
+   The .env file is already included in the repository and provides database credentials used by Docker and Spring Boot.
 
-4. **Start PostgreSQL using Docker Compose**
+3. **Start PostgreSQL using Docker Compose**
    
    Run this command in your system terminal (PowerShell, cmd, or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
    ```
@@ -45,7 +43,7 @@ It provides database credentials used by Docker and Spring Boot.
    ```
    PostgreSQL container should start with the correct user/password and mapped volume.
 
-6. **Run the application**
+4. **Run the application**
    
    Run this command in your system terminal (PowerShell, cmd, or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
    ```
