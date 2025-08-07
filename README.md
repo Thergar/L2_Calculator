@@ -13,6 +13,8 @@ This is my first project, so some parts may not be as good as they could be. How
 
 ## How to run L2_Calculator
 
+<img width="986" height="793" alt="image" src="https://github.com/user-attachments/assets/b6ff8bbd-c17e-476f-9dda-1376ecc5ea1f" />
+
 ### Requirements
 
 - Java 17+
@@ -51,6 +53,8 @@ It provides database credentials used by Docker and Spring Boot.
    ```
    This will open a simple JavaFX window with a visual interface of the application, communicating with the backend via HTTP.
 
+   <img width="986" height="793" alt="image" src="https://github.com/user-attachments/assets/17a4fcd5-7db4-4e4e-ba71-8658d859069c" />
+
 ---
 
 ## About architecture
@@ -63,12 +67,6 @@ This project was built to emphasize *modular design* and *clear separation of co
 - **Docker + Testcontainers** – simplify setup and ensure consistent test environments
 
 The modular structure makes the project maintainable, testable, and easy to extend by adding new features or scaling it further.
-
----
-
-## Security Note
-
-I'm aware that leaving the '.env' file in a public repository is not good a practice. But it was intentional and purely for learning purposes (to better understand how enviroment variables work with Docker and Spring Boot).
 
 ---
 
@@ -153,13 +151,16 @@ POST /pathfinding/calculate
 
 Content-Type: application/json
 
-```
-{
-    "startTown": "Dion Castle Town",
-    "endTown": "Dwarven Village",
-    "algorithmName": "BFS"
-}
-```
+<img width="262" height="193" alt="image" src="https://github.com/user-attachments/assets/1a613a94-29ee-4618-92b2-5d677c45a576" />
+
 
 API endpoints can be tested using the included Postman collection, simply import file `L2Calculator_API.postman_collection.json` located in package `src/postman/` into Postman and run all requests directly against your local server.
 All endpoints may return 400 or 404 for invalid input or when no path can be found. See `ErrorHandling.java` in `Errors/` package.
+
+---
+
+## Security Note
+
+I'm aware that leaving the '.env' file in a public repository is not good a practice. But it was intentional and purely for learning purposes (to better understand how enviroment variables work with Docker and Spring Boot).
+
+---
