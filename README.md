@@ -47,7 +47,8 @@ Navigate where you want to keep L2_Calculator, open Git bash and write.
    
    Run this command in your system terminal (PowerShell, cmd, or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
    ```
-   ./gradlew run
+   .\grdalew run    # Windows
+   ./gradlew run    # macOS/Linux
    ```
    This will open a simple JavaFX window with a visual interface of the application, communicating with the backend via HTTP.
 
