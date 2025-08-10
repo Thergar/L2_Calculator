@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     id("java")
     id("application")
@@ -51,6 +53,12 @@ javafx {
 
 application {
     mainClass.set("Lineage2CalculatorGUI.MainFX")
+}
+
+tasks.named<BootJar>("bootJar") {
+    mainClass.set("Lineage2Calculator.Main")   // <— backend
+    archiveFileName.set("app.jar")
+    exclude("Lineage2CalculatorGUI/**")        // wytnij GUI z JAR-a serwera
 }
 
 tasks.withType<JavaExec>().configureEach {
