@@ -2,6 +2,8 @@
 
 **L2_Calculator** is a showcase project designed as pathfinding calculator between towns from the game **Lineage II**. I chose the clear **Java** language for backend development, in the frontend i decided to use **JavaFX** to create simple desktop GUI. The backend uses graph algorithms (BFS and Dijkstra), and exposes basic REST API that GUI and external tools like **Postman** can communicate with. The Repository also includes a Dockerized **PostgreSQL** database with data representing the teleportation graph between towns. 
 
+![Demo](https://github.com/user-attachments/assets/b16b6960-3cf8-4f1e-bdc7-979cc1f02c2d)
+
 ### This Respository also contains:
 - Unit tests (JUnit)
 - Integration tests (with Testcontainers)
@@ -12,8 +14,6 @@ This is my first project, so some parts may not be as good as they could be. How
 ---
 
 ## How to run L2_Calculator
-
-<img width="986" height="793" alt="image" src="https://github.com/user-attachments/assets/b6ff8bbd-c17e-476f-9dda-1376ecc5ea1f" />
 
 ### Requirements
 
@@ -35,19 +35,28 @@ Navigate where you want to keep L2_Calculator, open Git bash and write.
    
    The .env file is already included in the repository and provides database credentials used by Docker and Spring Boot.
 
-3. **Start PostgreSQL using Docker Compose**
+3. **Build the application**
+
+   Run this command in your system terminal to build gradle project (compilation/tests/packaging).
+    ```
+   .\gradlew clean build    # Windows
+   ./gradlew clean build    # macOS/Linux
+   ```
+   After the build completes, you will find the artifacts in the `build/libs/` directory.
+
+5. **Start PostgreSQL using Docker Compose**
    
    Run this command in your system terminal (PowerShell, cmd, or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
    ```
    docker compose up -d
    ```
    PostgreSQL container should start with the correct user/password and mapped volume.
-
-4. **Run the application**
+   
+6. **Run the application**
    
    Run this command in your system terminal (PowerShell, cmd, or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
    ```
-   .\grdalew run    # Windows
+   .\gradlew run    # Windows
    ./gradlew run    # macOS/Linux
    ```
    This will open a simple JavaFX window with a visual interface of the application, communicating with the backend via HTTP.
