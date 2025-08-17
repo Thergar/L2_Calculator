@@ -1,7 +1,7 @@
 services:
 
   l2_postgres:
-    image: postgres:latest
+    image: postgres:16
     container_name: Lineage2_towns
     restart: always
     environment:
@@ -12,9 +12,14 @@ services:
       - "5432:5432"
     volumes:
       - ./L2_towns_dump.sql:/docker-entrypoint-initdb.d/L2_towns_dump.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${MY_USER} -d ${POSTGRES_DB:-L2_towns}"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
 
   l2_app:
-    build: .
+    build: ./Lineage2Calculator
     container_name: l2_calculator
     depends_on:
       - l2_postgres
@@ -27,6 +32,5 @@ services:
       DB_PORT: 5432
     stdin_open: true
     tty: true
-
     ports:
       - "8080:8080"
