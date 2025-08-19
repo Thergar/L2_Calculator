@@ -5,32 +5,55 @@ services:
     container_name: Lineage2_towns
     restart: always
     environment:
-      POSTGRES_USER: ${MY_USER}
-      POSTGRES_PASSWORD: ${MY_PASSWORD}
-      POSTGRES_DB: L2_towns
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-L2_towns}
     ports:
-      - "5432:5432"
-    volumes:
-      - ./L2_towns_dump.sql:/docker-entrypoint-initdb.d/L2_towns_dump.sql
+      - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${MY_USER} -d ${POSTGRES_DB:-L2_towns}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB:-L2_towns}"]
       interval: 5s
       timeout: 2s
       retries: 10
 
+  flyway:
+    build:
+      context: ./db-migrations
+      dockerfile: Dockerfile
+    depends_on:
+      l2_postgres:
+        condition: service_healthy
+    environment:
+        FLYWAY_URL: jdbc:postgresql://l2_postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-L2_towns}
+        FLYWAY_USER: ${POSTGRES_USER}
+        FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
+    command: >
+      -connectRetries=60
+      -baselineOnMigrate=true
+      -validateOnMigrate=true
+      migrate
+    restart: "no"
+
   l2_app:
-    build: ./Lineage2Calculator
+    build:
+      context: .
+      dockerfile: Lineage2Calculator/Dockerfile
     container_name: l2_calculator
     depends_on:
-      - l2_postgres
+      l2_postgres:
+        condition: service_healthy
     env_file:
       - .env
     environment:
-      DB_HOST: l2_postgres
-      DB_USER: ${MY_USER}
-      DB_PASSWORD: ${MY_PASSWORD}
-      DB_PORT: 5432
+      SPRING_DATASOURCE_URL: jdbc:postgresql://l2_postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-L2_towns}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'" ]
+      interval: 5s
+      timeout: 2s
+      retries: 10
     stdin_open: true
     tty: true
-    ports:
-      - "8080:8080"
