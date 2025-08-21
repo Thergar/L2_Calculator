@@ -24,9 +24,6 @@ dependencies {
     // Driver for PostgresSQL.
     implementation ("org.postgresql:postgresql:42.7.5")
 
-    // Dependency for dotenv.
-    implementation ("io.github.cdimascio:dotenv-java:3.1.0")
-
     // Dependencies for tests.
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:postgresql:1.20.5")

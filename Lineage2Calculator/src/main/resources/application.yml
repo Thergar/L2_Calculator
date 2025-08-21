@@ -1,11 +1,20 @@
 spring:
   datasource:
-    url: jdbc:postgresql://l2_postgres:5432/L2_towns
-    username: postgres
-    password: lineage2
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
-      show-sql: true
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: true
+
+  sql:
+    init:
+      mode: never
+
+  flyway:
+    baseline-on-migrate: true

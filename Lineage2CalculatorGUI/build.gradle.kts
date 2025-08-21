@@ -1,9 +1,8 @@
-
 plugins {
     id("java")
     id("application")
 
-    id("org.openjfx.javafxplugin") version "0.0.14"
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "org.example"
@@ -15,17 +14,20 @@ repositories {
 
 dependencies {
 
-    // Main dependencies for JavaFX
-    implementation("org.openjfx:javafx-controls:21.0.6")
-    implementation("org.openjfx:javafx-fxml:21.0.6")
+//    // Main dependencies for JavaFX
+//    implementation("org.openjfx:javafx-controls:21.0.6")
+//    implementation("org.openjfx:javafx-fxml:21.0.6")
     // ControlsFX library for additional UI controls.
     implementation("org.controlsfx:controlsfx:11.2.2")
-
 }
 
 javafx {
     version = "21.0.6"
     modules = listOf("javafx.controls", "javafx.fxml")
+}
+
+java {
+    toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
 }
 
 application {

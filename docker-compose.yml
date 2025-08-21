@@ -24,7 +24,7 @@ services:
       l2_postgres:
         condition: service_healthy
     environment:
-        FLYWAY_URL: jdbc:postgresql://l2_postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-L2_towns}
+        FLYWAY_URL: jdbc:postgresql://l2_postgres:5432/${POSTGRES_DB:-L2_towns}
         FLYWAY_USER: ${POSTGRES_USER}
         FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
     command: >
@@ -42,12 +42,15 @@ services:
     depends_on:
       l2_postgres:
         condition: service_healthy
+      flyway:
+        condition: service_completed_successfully
     env_file:
       - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://l2_postgres:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-L2_towns}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_FLYWAY_ENABLED: "false"
     ports:
       - "${APP_PORT:-8080}:8080"
     healthcheck:
