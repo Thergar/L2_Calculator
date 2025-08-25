@@ -1,6 +1,5 @@
 rootProject.name = "L2_Calculator"
 
-include(":backend", "gui")
+include(":backend", ":gui", ":dto")
 
-project(":backend").projectDir = file("Lineage2Calculator")
-project(":gui").projectDir = file("Lineage2CalculatorGUI")
+

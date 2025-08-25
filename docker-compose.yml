@@ -37,7 +37,7 @@ services:
   l2_app:
     build:
       context: .
-      dockerfile: Lineage2Calculator/Dockerfile
+      dockerfile: backend/Dockerfile
     container_name: l2_calculator
     depends_on:
       l2_postgres:
@@ -54,7 +54,7 @@ services:
     ports:
       - "${APP_PORT:-8080}:8080"
     healthcheck:
-      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'" ]
+      test: [ "CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'" ]
       interval: 5s
       timeout: 2s
       retries: 10
