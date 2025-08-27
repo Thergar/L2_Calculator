@@ -1,18 +1,18 @@
 # Postman Api Tests - L2Calculator
 
-'L2Calculator_API.postman_collection.json' is a Postman collection that contains tests set for the L2Calculator l2calculator.API.
-All requests use a collection-level variable called **baseUrl**, which defines the base URL of the l2calculator.API 
+'L2Calculator_API.postman_collection.json' is a Postman collection that contains tests set for the L2Calculator l2calculator.api.
+All requests use a collection-level variable called **baseUrl**, which defines the base URL of the l2calculator.api 
 
 The collection includes various automated tests for endpoints such as:
 
 - **GET** - used to retrieve data such as available towns or algorithms.
 - **POST** - used to submit user inputs and receive calculated results.
 
-Tests are designed to validate l2calculator.API's behavior, ensuring that it returns correct status code and objectives value: 
+Tests are designed to validate l2calculator.api's behavior, ensuring that it returns correct status code and objectives value: 
 
 - **HTTP Status Code**: The expected HTTP status code for the response ('200 OK', '400 BAD REQUEST').
 - **Objects**: Ensuring it contains expected fields and matches types.
-- **Error-path tests**: Validating that the l2calculator.API handles errors correctly, such as missing required fields or invalid inputs.
+- **Error-path tests**: Validating that the l2calculator.api handles errors correctly, such as missing required fields or invalid inputs.
 
 # Tested Functionalities:
 1. *GET /towns/all*: Retrieves a list of available towns.
@@ -21,7 +21,7 @@ Tests are designed to validate l2calculator.API's behavior, ensuring that it ret
 
 # How to run Tests:
 
-To execute the tests, need to ensure l2calculator environment for tests us up and running. the l2calculator.API Postman tests depends on *Docker Container*, so Docker Desktop must be installed and running.
+To execute the tests, need to ensure l2calculator environment for tests us up and running. the l2calculator.api Postman tests depends on *Docker Container*, so Docker Desktop must be installed and running.
 
 ## Environment Setup:
 1. **Docker Desktop**: Needed to run app and database containers.

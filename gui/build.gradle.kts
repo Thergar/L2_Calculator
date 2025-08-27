@@ -23,7 +23,7 @@ dependencies {
     implementation("org.springframework:spring-web:6.2.5")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
-    implementation(project(":shared"))
+    implementation(project(":dto"))
 }
 
 javafx {
@@ -36,7 +36,7 @@ java {
 }
 
 application {
-    mainClass.set("Lineage2CalculatorGUI.MainFX")
+    mainClass.set("l2calculator.MainFX")
 }
 
 tasks.withType<JavaExec>().configureEach {

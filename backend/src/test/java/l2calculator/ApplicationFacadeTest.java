@@ -1,7 +1,7 @@
 package l2calculator;
 
-import l2calculator.Errors.CustomErrors.NoPathFoundException;
-import l2calculator.Utils.BaseConfiguration;
+import l2calculator.errors.customerrors.NoPathFoundException;
+import l2calculator.utils.BaseConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;

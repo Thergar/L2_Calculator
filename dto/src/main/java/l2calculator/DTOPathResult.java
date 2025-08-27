@@ -1,5 +1,6 @@
 package l2calculator;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @see DijkstraPathResult
  * @see BFSPathResult
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
@@ -25,8 +27,8 @@ import java.util.List;
 })
 public abstract class DTOPathResult {
 
-    private final List<String> path;
-    private final int totalCost;
+    private List<String> path;
+    private int totalCost;
 
     /**
      * A Class {@code lineage2calculator.dto.DTOPathResult} is data transfer object that represents a result of a pathfinding algorithm.
@@ -38,6 +40,8 @@ public abstract class DTOPathResult {
         this.path = path;
         this.totalCost = totalCost;
     }
+
+    public DTOPathResult () {}
 
     /**
      * Retrieves the route represented as list of towns.

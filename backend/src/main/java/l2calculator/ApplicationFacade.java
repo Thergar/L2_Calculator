@@ -1,7 +1,7 @@
 package l2calculator;
 
-import l2calculator.Errors.InputValidator;
-import l2calculator.Services.Algorithm.CalculateAlgorithmService;
+import l2calculator.errors.InputValidator;
+import l2calculator.services.algorithm.CalculateAlgorithmService;
 import org.springframework.stereotype.Service;
 
 /**
