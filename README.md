@@ -75,33 +75,53 @@ The modular structure makes the project maintainable, testable, and easy to exte
 
 ## Project Structure
 
-```txt
+This repository is organized as a multi-module Gradle project:
+
+- **backend** — Spring Boot REST API, contains business logic, database entities, repositories, and REST controllers.
+- **dto** — Shared Data Transfer Objects used for communication between backend and GUI.
+- **gui** — JavaFX desktop client, provides a graphical interface and integrates with the backend API.
+- **postman** — Postman collection with positive and negative tests for REST API endpoints.
+
+```text
 └── L2_Calculator
-    └── src/
-        ├── main/
-        │   ├── java/
-        │   │   ├── Lineage2Calculator
-        │   │   │   ├── l2calculator.algorithms/               → pathfinding logic (BFS, Dijkstra)
-        │   │   │   ├── l2calculator/                      → data transfer objects
-        │   │   │   ├── l2calculator.entities/                 → database entities and repositories
-        │   │   │   ├── l2calculator.errors/                   → exception handling & validation
-        │   │   │   ├── l2calculator.graph/                    → graph model
-        │   │   │   ├── l2calculator.rest/                     → Spring Boot l2calculator.rest l2calculator.api controllers
-        │   │   │   ├── l2calculator.services/                 → business logic (graph building, path selection)
-        │   │   │   ├── l2calculator.utils/                    → helpers, dotenv support
-        │   │   │   ├── l2calculator.ApplicationFacade.java
-        │   │   │   └── l2calculator.Main.java
-        │   │   └── Lineage2CalculatorGUI/
-        │   │       ├── l2calculator.api/                      → GUI l2calculator.api integration layer 
-        │   │       ├── l2calculator.scenes/                   → JavaFX scenes and UI components
-        │   │       └── l2calculator.utils/                    → input validation, autocomplete
-        │   └── resources/
-        │       ├── META-INF
-        │       ├── application.yml               → Spring Boot config
-        │       └── images/                       → Lineage II map and assets
-        ├── postman/                              → Postman collection for l2calculator.rest l2calculator.api tests
-        └── test/                                 → unit and integration tests
-```
+    ├── backend/                           → Spring Boot backend
+    │   └── src/
+    │       ├── main/
+    │       │   ├── java/
+    │       │   │   └── l2calculator/
+    │       │   │       ├── algorithms/               → pathfinding logic (BFS, Dijkstra)
+    │       │   │       ├── entities/                 → database entities and repositories
+    │       │   │       ├── errors/                   → exception handling & validation
+    │       │   │       ├── graph/                    → graph model
+    │       │   │       ├── rest/                     → Spring Boot REST controllers
+    │       │   │       ├── services/                 → business logic (graph building, path selection)
+    │       │   │       └── utils/                    → helpers, dotenv support
+    │       │   └── resources/
+    │       │       ├── application.yml               → Spring Boot config
+    │       │       └── images/                       → Lineage II map and assets
+    │       └── test/                                 → unit and integration tests
+    │
+    ├── dto/                               → Shared Data Transfer Objects
+    │   └── src/
+    │       └── main/java/l2calculator/
+    │           └── dto/                   → data transfer objects
+    │
+    ├── gui/                               → JavaFX client
+    │   └── src/
+    │       ├── main/
+    │       │   ├── java/
+    │       │   │   └── l2calculator/
+    │       │   │       ├── api/                      → GUI API integration layer
+    │       │   │       ├── scenes/                   → JavaFX scenes and UI components
+    │       │   │       └── utils/                    → input validation, autocomplete
+    │       │   └── resources/images/                 → Lineage II map and assets
+    │       └── test/                                 → GUI tests
+    │
+    ├── postman/                          → Postman collection for REST API tests
+    │
+    ├── docker-compose.yml                → Docker Compose setup
+    └── settings.gradle.kts               → Gradle settings
+
 ---
 
 ## Tests
