@@ -18,7 +18,7 @@ This is my first project, so some parts may not be as good as they could be. How
 ### Requirements
 
 - Java 17+
-- Docker (with Docker Compose support)
+- Docker + WSL (with Docker Compose support)
 - Git (Gradle wrapper is included)
 - Optional: Postman for l2calculator.api testing
 
@@ -35,26 +35,21 @@ Navigate where you want to keep L2_Calculator, open Git bash and write.
    
    The .env file is already included in the repository and provides database credentials used by Docker and Spring Boot.
 
-3. **Build the application**
-
-   Run this command in your system terminal to build gradle project (compilation/tests/packaging).
-    ```
-   .\gradlew clean build    # Windows
-   ./gradlew clean build    # macOS/Linux
-   ```
-   After the build completes, you will find the artifacts in the `build/libs/` directory.
-
-5. **Start PostgreSQL using Docker Compose**
+3. **Start the services with Docker Compose. Before moving on, make sure that the Docker Compose stack is healthy**
    
    Run this command in your system terminal (PowerShell, cmd, or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
    ```
-   docker compose up -d
+   docker compose up -d --wait
+   docker compose ps
    ```
    PostgreSQL container should start with the correct user/password and mapped volume.
    
-6. **Run the application**
+4. **Run the GUI of the application**
+
+   The GUI module does not yet implement lazy-loading/retry for the **cities list** (Lazy-loading with retry/backoff will be added in a future iteration). It currently assumes the
+   backend (Spring Boot) and database are already up. If the services aren't up, the GUI will throw a fatal error and application will not start.
    
-   Run this command in your system terminal (PowerShell, cmd, or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
+   Run this command in your system terminal (PowerShell, cmd, Git Bash or macOS/Linux terminal) or IntelliJ's built-in terminal, from the project root directory.
    ```
    .\gradlew run    # Windows
    ./gradlew run    # macOS/Linux
