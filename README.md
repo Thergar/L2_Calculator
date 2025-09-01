@@ -121,7 +121,7 @@ This repository is organized as a multi-module Gradle project:
     │
     ├── docker-compose.yml                → Docker Compose setup
     └── settings.gradle.kts               → Gradle settings
-
+```
 ---
 
 ## Tests
